@@ -4,18 +4,30 @@ import com.javafxpert.carddeckdemo.model.Card;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class CardDeckService {
   private static List<Card> cardList = new ArrayList<>();
 
-  public Flux<Card> getAllCards(boolean shuffled) {
+  public Flux<Card> getAllCards(boolean shuffle) {
+    List<Card> retList;
     if (cardList != null || cardList.isEmpty()) {
       cardList = createCards();
     }
-    return Flux.<Card>fromIterable(cardList);
+
+    if (shuffle) {
+      retList = new ArrayList<>(cardList);
+      Collections.shuffle(retList);
+    }
+    else {
+      retList = cardList;
+    }
+    return Flux.<Card>fromIterable(retList)
+      .delayElements(Duration.ofMillis(250));
   }
 
   /*

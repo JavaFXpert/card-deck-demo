@@ -19,7 +19,7 @@ public class RunnerBean implements CommandLineRunner {
   public void run(String... args) throws Exception {
     System.out.println("After starting up");
 
-    Flux<Card> cardFlux = this.cardDeckService.getAllCards(false);
+    Flux<Card> cardFlux = this.cardDeckService.getAllCards(true);
     cardFlux.subscribe(System.out::println,
       System.err::println,
       () -> System.out.println("Done"));
