@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 
 @Component
 public class RunnerBean implements CommandLineRunner {
-  CardDeckService cardDeckService;
+  private final CardDeckService cardDeckService;
 
   RunnerBean(CardDeckService cardDeckService) {
     this.cardDeckService = cardDeckService;

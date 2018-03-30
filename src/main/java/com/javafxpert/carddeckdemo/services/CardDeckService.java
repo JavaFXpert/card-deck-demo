@@ -13,13 +13,13 @@ import java.util.List;
 public class CardDeckService {
   private static List<Card> cardList = new ArrayList<>();
 
-  public Flux<Card> getAllCards(boolean shuffle) {
+  public Flux<Card> getAllCards(boolean shuffled) {
     List<Card> retList;
     if (cardList != null || cardList.isEmpty()) {
       cardList = createCards();
     }
 
-    if (shuffle) {
+    if (shuffled) {
       retList = new ArrayList<>(cardList);
       Collections.shuffle(retList);
     }
@@ -27,7 +27,7 @@ public class CardDeckService {
       retList = cardList;
     }
     return Flux.<Card>fromIterable(retList)
-      .delayElements(Duration.ofMillis(250));
+      .delayElements(Duration.ofMillis(0));
   }
 
   /*
