@@ -1,4 +1,10 @@
+/*
+ Card images from http://acbl.mybigcommerce.com/52-playing-cards/
+ Card data model inspired by Chase Robert's elegant Deck of Cards API https://deckofcardsapi.com/
+ */
 package com.javafxpert.carddeckdemo.model;
+
+import java.util.Objects;
 
 public class Card {
   private String code;
@@ -82,5 +88,32 @@ public class Card {
 
   public String getImage() {
     return image;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Card card = (Card) o;
+    return Objects.equals(code, card.code) &&
+      Objects.equals(value, card.value) &&
+      Objects.equals(suit, card.suit) &&
+      Objects.equals(image, card.image);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(code, value, suit, image);
+  }
+
+  @Override
+  public String toString() {
+    return "Card{" +
+      "code='" + code + '\'' +
+      ", value='" + value + '\'' +
+      ", suit='" + suit + '\'' +
+      ", image='" + image + '\'' +
+      '}';
   }
 }
