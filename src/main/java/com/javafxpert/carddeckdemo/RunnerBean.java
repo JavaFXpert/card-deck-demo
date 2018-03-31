@@ -2,9 +2,12 @@ package com.javafxpert.carddeckdemo;
 
 import com.javafxpert.carddeckdemo.model.Card;
 import com.javafxpert.carddeckdemo.services.CardDeckService;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 
 @Component
@@ -19,10 +22,14 @@ public class RunnerBean implements CommandLineRunner {
   public void run(String... args) throws Exception {
     System.out.println("After starting up");
 
-    Flux<Card> cardFlux = this.cardDeckService.getAllCards(true);
-    cardFlux.subscribe(System.out::println,
-      System.err::println,
-      () -> System.out.println("Done"));
+    CardDeckSubscriber<Card> cardDeckSubscriber = new CardDeckSubscriber<>();
+
+    Flux<Card> cardFlux = this.cardDeckService.getAllCards(false);
+
+    cardFlux.subscribe(cardDeckSubscriber);
+
+    System.out.println("Requesting 3 more");
+    cardDeckSubscriber.request(3);
 
   }
 }
