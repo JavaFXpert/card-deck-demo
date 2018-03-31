@@ -1,5 +1,6 @@
 package com.javafxpert.carddeckdemo.services;
 
+import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
 import com.javafxpert.carddeckdemo.model.Card;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -11,7 +12,14 @@ import java.util.List;
 
 @Service
 public class CardDeckService {
+  private final CardDeckDemoProperties cardDeckDemoProperties;
   private static List<Card> cardList = new ArrayList<>();
+  private String imagesUri = "";
+
+  public CardDeckService(CardDeckDemoProperties cardDeckDemoProperties) {
+    this.cardDeckDemoProperties = cardDeckDemoProperties;
+    imagesUri = cardDeckDemoProperties.getCardimageshost() + ":" + cardDeckDemoProperties.getCardimagesport() + "/images";
+  }
 
   public Flux<Card> getAllCards(boolean shuffled) {
     List<Card> retList;
@@ -34,63 +42,63 @@ public class CardDeckService {
    * Populate the list of cards
    * TODO: Consider using loops instead of being so verbose
    */
-  private static List<Card> createCards() {
+  private List<Card> createCards() {
     List<Card> cards = new ArrayList<>();
-    cards.add(new Card("AS"));
-    cards.add(new Card("2S"));
-    cards.add(new Card("3S"));
-    cards.add(new Card("4S"));
-    cards.add(new Card("5S"));
-    cards.add(new Card("6S"));
-    cards.add(new Card("7S"));
-    cards.add(new Card("8S"));
-    cards.add(new Card("9S"));
-    cards.add(new Card("0S"));
-    cards.add(new Card("JS"));
-    cards.add(new Card("QS"));
-    cards.add(new Card("KS"));
+    cards.add(new Card("AS", imagesUri));
+    cards.add(new Card("2S", imagesUri));
+    cards.add(new Card("3S", imagesUri));
+    cards.add(new Card("4S", imagesUri));
+    cards.add(new Card("5S", imagesUri));
+    cards.add(new Card("6S", imagesUri));
+    cards.add(new Card("7S", imagesUri));
+    cards.add(new Card("8S", imagesUri));
+    cards.add(new Card("9S", imagesUri));
+    cards.add(new Card("0S", imagesUri));
+    cards.add(new Card("JS", imagesUri));
+    cards.add(new Card("QS", imagesUri));
+    cards.add(new Card("KS", imagesUri));
 
-    cards.add(new Card("AD"));
-    cards.add(new Card("2D"));
-    cards.add(new Card("3D"));
-    cards.add(new Card("4D"));
-    cards.add(new Card("5D"));
-    cards.add(new Card("6D"));
-    cards.add(new Card("7D"));
-    cards.add(new Card("8D"));
-    cards.add(new Card("9D"));
-    cards.add(new Card("0D"));
-    cards.add(new Card("JD"));
-    cards.add(new Card("QD"));
-    cards.add(new Card("KD"));
+    cards.add(new Card("AD", imagesUri));
+    cards.add(new Card("2D", imagesUri));
+    cards.add(new Card("3D", imagesUri));
+    cards.add(new Card("4D", imagesUri));
+    cards.add(new Card("5D", imagesUri));
+    cards.add(new Card("6D", imagesUri));
+    cards.add(new Card("7D", imagesUri));
+    cards.add(new Card("8D", imagesUri));
+    cards.add(new Card("9D", imagesUri));
+    cards.add(new Card("0D", imagesUri));
+    cards.add(new Card("JD", imagesUri));
+    cards.add(new Card("QD", imagesUri));
+    cards.add(new Card("KD", imagesUri));
 
-    cards.add(new Card("AC"));
-    cards.add(new Card("2C"));
-    cards.add(new Card("3C"));
-    cards.add(new Card("4C"));
-    cards.add(new Card("5C"));
-    cards.add(new Card("6C"));
-    cards.add(new Card("7C"));
-    cards.add(new Card("8C"));
-    cards.add(new Card("9C"));
-    cards.add(new Card("0C"));
-    cards.add(new Card("JC"));
-    cards.add(new Card("QC"));
-    cards.add(new Card("KC"));
+    cards.add(new Card("AC", imagesUri));
+    cards.add(new Card("2C", imagesUri));
+    cards.add(new Card("3C", imagesUri));
+    cards.add(new Card("4C", imagesUri));
+    cards.add(new Card("5C", imagesUri));
+    cards.add(new Card("6C", imagesUri));
+    cards.add(new Card("7C", imagesUri));
+    cards.add(new Card("8C", imagesUri));
+    cards.add(new Card("9C", imagesUri));
+    cards.add(new Card("0C", imagesUri));
+    cards.add(new Card("JC", imagesUri));
+    cards.add(new Card("QC", imagesUri));
+    cards.add(new Card("KC", imagesUri));
 
-    cards.add(new Card("AH"));
-    cards.add(new Card("2H"));
-    cards.add(new Card("3H"));
-    cards.add(new Card("4H"));
-    cards.add(new Card("5H"));
-    cards.add(new Card("6H"));
-    cards.add(new Card("7H"));
-    cards.add(new Card("8H"));
-    cards.add(new Card("9H"));
-    cards.add(new Card("0H"));
-    cards.add(new Card("JH"));
-    cards.add(new Card("QH"));
-    cards.add(new Card("KH"));
+    cards.add(new Card("AH", imagesUri));
+    cards.add(new Card("2H", imagesUri));
+    cards.add(new Card("3H", imagesUri));
+    cards.add(new Card("4H", imagesUri));
+    cards.add(new Card("5H", imagesUri));
+    cards.add(new Card("6H", imagesUri));
+    cards.add(new Card("7H", imagesUri));
+    cards.add(new Card("8H", imagesUri));
+    cards.add(new Card("9H", imagesUri));
+    cards.add(new Card("0H", imagesUri));
+    cards.add(new Card("JH", imagesUri));
+    cards.add(new Card("QH", imagesUri));
+    cards.add(new Card("KH", imagesUri));
 
     return cards;
   }

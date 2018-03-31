@@ -5,25 +5,25 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardTest {
-  Card cardAS = new Card("AS");
-  Card card2S = new Card("2S");
-  Card card3S = new Card("3S");
-  Card card4S = new Card("4S");
-  Card card5S = new Card("5S");
-  Card card6S = new Card("6S");
-  Card card7S = new Card("7S");
-  Card card8S = new Card("8S");
-  Card card9S = new Card("9S");
-  Card card0S = new Card("0S");
-  Card cardJS = new Card("JS");
-  Card cardQS = new Card("QS");
-  Card cardKS = new Card("KS");
+  Card cardAS = new Card("AS" , "");
+  Card card2S = new Card("2S" , "");
+  Card card3S = new Card("3S" , "");
+  Card card4S = new Card("4S" , "");
+  Card card5S = new Card("5S" , "");
+  Card card6S = new Card("6S" , "");
+  Card card7S = new Card("7S" , "");
+  Card card8S = new Card("8S" , "");
+  Card card9S = new Card("9S" , "");
+  Card card0S = new Card("0S" , "");
+  Card cardJS = new Card("JS" , "");
+  Card cardQS = new Card("QS" , "");
+  Card cardKS = new Card("KS" , "");
 
-  Card cardAD = new Card("AD");
+  Card cardAD = new Card("AD" , "");
 
-  Card cardAC = new Card("AC");
+  Card cardAC = new Card("AC" , "");
 
-  Card cardAH = new Card("AH");
+  Card cardAH = new Card("AH" , "");
 
   @org.junit.jupiter.api.Test
   void getCode() {
@@ -57,6 +57,6 @@ class CardTest {
 
   @org.junit.jupiter.api.Test
   void getImage() {
-    assertEquals("/static/images/AS.png", cardAS.getImage());
+    assertEquals("/AS.png", cardAS.getImage());
   }
 }

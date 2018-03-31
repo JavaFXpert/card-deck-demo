@@ -4,6 +4,11 @@
  */
 package com.javafxpert.carddeckdemo.model;
 
+import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
 import java.util.Objects;
 
 public class Card {
@@ -12,7 +17,7 @@ public class Card {
   private String suit;
   private String image;
 
-  public Card(String code) {
+  public Card(String code, String imagesUri) {
     this.code = code;
     String valueCode = code.substring(0,1);
     switch (valueCode) {
@@ -71,7 +76,7 @@ public class Card {
         suit = "HEARTS";
     }
 
-    image = "/static/images/" + code + ".png";
+    image = imagesUri + "/" + code + ".png";
   }
 
   public String getCode() {
