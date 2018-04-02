@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Reactor Cards</title>
+    <link rel="stylesheet" type="text/css" href="./styles.css">
+</head>
+
+<body>
+    <h1>Reactor Cards</h1>
+    <button id="new-game">Shuffle New Deck</button>
+    <div class="game-container">
+        
+        <div id="game-area">
+            <div id="dealer-area">
+                <h2>Dealer (<span id="dealer-number"></span>)</h2>
+                <div id="dealer-cards">
+                    <!-- Cards will appear here. -->
+                </div>
+            </div>
+            <div id="player-area">
+              <h2>
+                Player (<span id="player-number"></span>) <span id="announcement"></span>
+              </h2>
+              <div id="player-cards">
+                    <!-- Cards will appear here. -->
+              </div>
+            </div>
+            
+            <div id="action-area">
+                <button id="next-hand" style="display:none;">Next Hand</button>
+                <button id="hit-me" style="display:none;">Hit me</button>
+                <button id="stay" style="display:none;">I'll stay</button>
+            </div>
+            
+        </div>
+        
+    </div>
+    <script type="text/javascript" src="./app.js"></script>
+</body>
+
+</html>
