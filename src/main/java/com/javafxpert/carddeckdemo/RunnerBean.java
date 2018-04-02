@@ -22,14 +22,20 @@ public class RunnerBean implements CommandLineRunner {
   public void run(String... args) throws Exception {
     System.out.println("After starting up");
 
-    CardDeckSubscriber<Card> cardDeckSubscriber = new CardDeckSubscriber<>();
-
     Flux<Card> cardFlux = this.cardDeckService.getAllCards(false);
 
-    cardFlux.subscribe(cardDeckSubscriber);
 
+    // Demonstrates use of BaseSubscriber
+    CardDeckSubscriber<Card> cardDeckSubscriber = new CardDeckSubscriber<>();
+    cardFlux.subscribe(cardDeckSubscriber);
     System.out.println("Requesting 3 more");
     cardDeckSubscriber.request(3);
+
+    // Demonstrates not using a BaseSubscriber
+//    cardFlux.subscribe(System.out::println,
+//            System.err::println,
+//            () -> System.out.println("Complete"));
+
 
   }
 }
