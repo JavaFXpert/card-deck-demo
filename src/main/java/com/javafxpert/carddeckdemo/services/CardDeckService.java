@@ -23,9 +23,9 @@ public class CardDeckService {
 
   public Flux<Card> getAllCards(boolean shuffled) {
     List<Card> retList;
-    if (cardList != null || cardList.isEmpty()) {
+    //if (cardList != null || cardList.isEmpty()) {
       cardList = createCards();
-    }
+    //}
 
     if (shuffled) {
       retList = new ArrayList<>(cardList);

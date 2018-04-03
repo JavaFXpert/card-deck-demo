@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import java.util.Comparator;
+
 @RestController
 public class CardDeckController {
   private final CardDeckService cardDeckService;
   private final CardDeckDemoProperties cardDeckDemoProperties;
+  private final Comparator<Card> comparator = (c1, c2) -> c1.getWorth() - c2.getWorth();
 
   @Autowired
   public CardDeckController(CardDeckService cardDeckService,
@@ -43,16 +46,27 @@ public class CardDeckController {
 
   @GetMapping("/carddeckmerge")
   public Flux<Card> getCardDeckMerge() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 13);
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 13);
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 13);
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 13);
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 13);//.sort(comparator);
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 13);//.sort(comparator);
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 13);//.sort(comparator);
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 13);//.sort(comparator);
 
-    Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux).take(10);
+    Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux).take(12);
 
     return cardFlux;
   }
 
+  @GetMapping("/carddeckmergewith")
+  public Flux<Card> getCardDeckMergeWith() {
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 6);//.sort(comparator);
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 6);//.sort(comparator);
+//    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 13);//.sort(comparator);
+//    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 13);//.sort(comparator);
+
+    Flux<Card> cardFlux = heartsFlux.mergeWith(clubsFlux).take(12);
+
+    return cardFlux;
+  }
   @GetMapping("/carddeckmergeordered")
   public Flux<Card> getCardDeckMergeOrdered() {
     Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 3);
@@ -60,7 +74,7 @@ public class CardDeckController {
     Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 3);
     Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 3);
 
-    Flux<Card> cardFlux = Flux.mergeOrdered((c1, c2) -> c1.getWorth() - c2.getWorth(), heartsFlux, clubsFlux, spadesFlux, diamondsFlux).take(12);
+    Flux<Card> cardFlux = Flux.mergeOrdered(comparator, heartsFlux, clubsFlux, spadesFlux, diamondsFlux).take(12);
 
     return cardFlux;
   }
@@ -73,7 +87,20 @@ public class CardDeckController {
     Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 3);
 
     Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux)
-            .sort((c1, c2) -> c1.getWorth() - c2.getWorth())
+            .sort(comparator)
+            .take(12);
+
+    return cardFlux;
+  }
+
+  @GetMapping("/carddecktakelast")
+  public Flux<Card> getCardDeckTakeLast() {
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 13).sort(comparator).takeLast(3);
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 13).sort(comparator).takeLast(3);
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 13).sort(comparator).takeLast(3);
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 13).sort(comparator).takeLast(3);
+
+    Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux)
             .take(12);
 
     return cardFlux;
