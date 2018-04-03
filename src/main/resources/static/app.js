@@ -38,7 +38,9 @@ function dealCards() {
     //fetch(`http://localhost:8080/carddeck?numcards=5`)
     //fetch(`http://localhost:8080/carddeck?shuffled=true&numcards=6`)
     //fetch(`http://localhost:8080/carddeckbysuit?suit=DIAMONDS&shuffled=true&numcards=7`)
-    fetch(`http://localhost:8080/carddeckmerged`)
+    //fetch(`http://localhost:8080/carddeckmerge`)
+    //fetch(`http://localhost:8080/carddeckmergeordered`)
+    fetch(`http://localhost:8080/carddeckmergesort`)
         .then(cards => cards.json())
         .then(cards => {
           hitMeNode.style.display = "block";

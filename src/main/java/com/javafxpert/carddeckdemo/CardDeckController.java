@@ -41,8 +41,8 @@ public class CardDeckController {
     return cardFlux;
   }
 
-  @GetMapping("/carddeckmerged")
-  public Flux<Card> getCardDeckMerged() {
+  @GetMapping("/carddeckmerge")
+  public Flux<Card> getCardDeckMerge() {
     Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 13);
     Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 13);
     Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 13);
@@ -50,9 +50,31 @@ public class CardDeckController {
 
     Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux).take(10);
 
-//    Flux<Card> cardFlux = clubsFlux
-//            .mergeWith(heartsFlux)
-//            .take(8);
+    return cardFlux;
+  }
+
+  @GetMapping("/carddeckmergeordered")
+  public Flux<Card> getCardDeckMergeOrdered() {
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 3);
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 3);
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 3);
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 3);
+
+    Flux<Card> cardFlux = Flux.mergeOrdered((c1, c2) -> c1.getWorth() - c2.getWorth(), heartsFlux, clubsFlux, spadesFlux, diamondsFlux).take(12);
+
+    return cardFlux;
+  }
+
+  @GetMapping("/carddeckmergesort")
+  public Flux<Card> getCardDeckMergeSort() {
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 3);
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 3);
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 3);
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 3);
+
+    Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux)
+            .sort((c1, c2) -> c1.getWorth() - c2.getWorth())
+            .take(12);
 
     return cardFlux;
   }
