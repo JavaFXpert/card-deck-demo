@@ -25,9 +25,28 @@ public class CardDeckController {
   }
 
   @GetMapping("/carddeck")
-  public Flux<Card> getCardDeck(boolean shuffled, @RequestParam(defaultValue = "10") int numcards) {
+  public Flux<Card> getCardDeck(@RequestParam(defaultValue = "false") boolean shuffled, @RequestParam(defaultValue = "10") int numcards) {
 
-    Flux<Card> cardFlux = cardDeckService.getAllCards(shuffled).take(numcards);
+    Flux<Card> cardFlux = cardDeckService.getAllCards(shuffled)
+            .take(numcards);
+    return cardFlux;
+  }
+
+  @GetMapping("/carddeckbysuit")
+  public Flux<Card> getCardDeckBySuit(@RequestParam(defaultValue = "SPADES") String suit, @RequestParam(defaultValue = "false") boolean shuffled, @RequestParam(defaultValue = "10") int numcards) {
+
+    Flux<Card> cardFlux = cardDeckService.getAllCards(shuffled)
+            .filter(card -> card.getSuit().equalsIgnoreCase(suit))
+            .take(numcards);
+    return cardFlux;
+  }
+
+  @GetMapping("/carddeckzipped")
+  public Flux<Card> getCardDeckZipped() {
+
+    Flux<Card> cardFlux = getCardDeckBySuit("HEARTS", false, 5)
+            .mergeWith(getCardDeckBySuit("CLUBS", false, 5))
+            .take(10);
     return cardFlux;
   }
 

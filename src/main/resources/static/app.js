@@ -35,7 +35,10 @@ function dealCards() {
     resetPlayingArea();
 
     //fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=4`)
-    fetch(`http://localhost:8080/carddeck?shuffled=false&numcards=6`)
+    //fetch(`http://localhost:8080/carddeck?numcards=5`)
+    //fetch(`http://localhost:8080/carddeck?shuffled=true&numcards=6`)
+    //fetch(`http://localhost:8080/carddeckbysuit?suit=DIAMONDS&shuffled=true&numcards=7`)
+    fetch(`http://localhost:8080/carddeckzipped`)
         .then(cards => cards.json())
         .then(cards => {
           hitMeNode.style.display = "block";
@@ -141,16 +144,19 @@ function resetPlayingArea() {
 
 function getNewDeck() {
   resetPlayingArea();
-  // fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
-  fetch('https://deckofcardsapi.com/api/deck/new/')
-  .then(res => res.json())
-  .then(res => {
-    deckID = res.deck_id;
     nextHandNode.style.display = "block";
     hitMeNode.style.display = "none";
     stayNode.style.display = "none";
-  })
-  .catch(console.error)
+  // fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
+  // fetch('https://deckofcardsapi.com/api/deck/new/')
+  // .then(res => res.json())
+  // .then(res => {
+  //   deckID = res.deck_id;
+  //   nextHandNode.style.display = "block";
+  //   hitMeNode.style.display = "none";
+  //   stayNode.style.display = "none";
+  // })
+  // .catch(console.error)
 }
 
 function hitMe(target) {
