@@ -41,12 +41,19 @@ public class CardDeckController {
     return cardFlux;
   }
 
-  @GetMapping("/carddeckzipped")
-  public Flux<Card> getCardDeckZipped() {
+  @GetMapping("/carddeckmerged")
+  public Flux<Card> getCardDeckMerged() {
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 13);
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 13);
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 13);
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 13);
 
-    Flux<Card> cardFlux = getCardDeckBySuit("HEARTS", false, 5)
-            .mergeWith(getCardDeckBySuit("CLUBS", false, 5))
-            .take(10);
+    Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux).take(10);
+
+//    Flux<Card> cardFlux = clubsFlux
+//            .mergeWith(heartsFlux)
+//            .take(8);
+
     return cardFlux;
   }
 

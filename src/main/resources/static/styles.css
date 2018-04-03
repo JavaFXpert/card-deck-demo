@@ -110,8 +110,8 @@ button#stay {
 }
 
 img {
-  width: 130px;
-  height: 190px;
+  width: 100px;
+  height: 150px;
 }
 
 @media (min-width: 1200px) {
