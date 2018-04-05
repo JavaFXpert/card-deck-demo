@@ -124,12 +124,12 @@ public class CardDeckController {
 
   @GetMapping("/carddeckriffleshuffle")
   public Flux<Card> getCardDeckBufferShuffle() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 13);
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 13);
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 13);
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 13);
-
-    Flux<Card> cardFlux = Flux.concat(clubsFlux, heartsFlux, spadesFlux, diamondsFlux);
+//    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 13);
+//    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 13);
+//    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 13);
+//    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 13);
+//
+    Flux<Card> cardFlux = cardDeckService.getAllCards(false);
             //.doOnEach(System.out::println);
 
 //    Flux<Card> cutCards1 = cardFlux.takeLast(6);
@@ -140,6 +140,16 @@ public class CardDeckController {
 
     return riffleShuffle(cardFlux, 5)
             .take(5).sort(comparator);
+  }
+
+  public Flux<Card> overhandShuffle(Flux<Card> cardFlux) {
+    int numCardsLeft = 52;
+    Flux<Card> overhandShuffledCardFlux = Flux.empty();
+    while (numCardsLeft > 0) {
+      //TODO: LEFT OFF HERE
+
+    }
+    return overhandShuffledCardFlux;
   }
 
   public Flux<Card> riffleShuffle(Flux<Card> cardFlux, int numTimes) {
