@@ -14,6 +14,7 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.Comparator;
+import java.util.List;
 
 @RestController
 public class CardDeckController {
@@ -109,15 +110,40 @@ public class CardDeckController {
 
   @GetMapping("/carddecktakelast")
   public Flux<Card> getCardDeckTakeLast() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 13).sort(comparator).takeLast(3);
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 13).sort(comparator).takeLast(3);
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 13).sort(comparator).takeLast(3);
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 13).sort(comparator).takeLast(3);
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 13).sort(comparator).takeLast(3);
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 13).sort(comparator).takeLast(3);
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 13).sort(comparator).takeLast(3);
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 13).sort(comparator).takeLast(3);
 
     Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux)
             .take(12);
 
     return cardFlux;
+  }
+
+  @GetMapping("/carddeckriffleshuffle")
+  public Flux<Card> getCardDeckBufferShuffle() {
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 3)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 3)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 3)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 3)
+            .delayElements(Duration.ofMillis(1));
+
+    Flux<Card> cardFlux = Flux.concat(clubsFlux, heartsFlux, spadesFlux, diamondsFlux);
+            //.doOnEach(System.out::println);
+
+    Flux<Card> cardFluxTakeLast6 = cardFlux.takeLast(6);
+    Flux<Card> cardFluxTakeLast6again = cardFlux.take(6);
+    Flux<Card> cardFluxCutCards = cardFluxTakeLast6.concatWith(cardFluxTakeLast6again);
+
+
+
+    //Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux);
+
+    return cardFluxCutCards;
   }
 
   /*
