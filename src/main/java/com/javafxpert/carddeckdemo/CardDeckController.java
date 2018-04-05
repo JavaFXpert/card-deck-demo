@@ -138,22 +138,31 @@ public class CardDeckController {
 //
 //    Flux<Card> flatMapped = tuples.flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()));
 
-    return riffleShuffle(riffleShuffle(riffleShuffle(riffleShuffle(riffleShuffle(cardFlux))))).take(5);
-    //return riffleShuffle(cardFlux);
+    return riffleShuffle(cardFlux, 5)
+            .take(5).sort(comparator);
+  }
+
+  public Flux<Card> riffleShuffle(Flux<Card> cardFlux, int numTimes) {
+    Flux<Card> riffleShuffledCardFlux = cardFlux;
+    for (int i = 0; i < numTimes; i++) {
+      riffleShuffledCardFlux = riffleShuffle(riffleShuffledCardFlux);
+    }
+    return riffleShuffledCardFlux;
   }
 
   public Flux<Card> riffleShuffle(Flux<Card> cardFlux) {
-      int numCards = 52;
-      int cardsToCut = (int)(Math.random() * numCards);
-      Flux<Card> cutCards = cardFlux.takeLast(numCards - cardsToCut).concatWith(cardFlux.take(cardsToCut));
-      Flux<Card> cutCardsA = cutCards.take(numCards / 2);
-      Flux<Card> cutCardsB = cutCards.takeLast(numCards / 2);
-      Flux<Tuple2<Card, Card>> tuples = Flux.zip(cutCardsA, cutCardsB);
+    int numCards = 52;
 
-      //return cutCards;
-      return tuples.flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()));
+    int cardsToCut = (int)(Math.random() * numCards);
+    //int cardsToCut = numCards / 2;
+
+    Flux<Card> cutCards = cardFlux.takeLast(numCards - cardsToCut).concatWith(cardFlux.take(cardsToCut));
+    Flux<Card> cutCardsA = cutCards.take(numCards / 2);
+    Flux<Card> cutCardsB = cutCards.takeLast(numCards / 2);
+    Flux<Tuple2<Card, Card>> tuples = Flux.zip(cutCardsA, cutCardsB);
+
+    return tuples.flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()));
   }
-
 
 
   /*
