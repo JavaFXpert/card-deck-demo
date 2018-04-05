@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.util.Comparator;
@@ -123,28 +124,37 @@ public class CardDeckController {
 
   @GetMapping("/carddeckriffleshuffle")
   public Flux<Card> getCardDeckBufferShuffle() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 3)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 3)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 3)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 3)
-            .delayElements(Duration.ofMillis(1));
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 13);
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 13);
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 13);
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 13);
 
     Flux<Card> cardFlux = Flux.concat(clubsFlux, heartsFlux, spadesFlux, diamondsFlux);
             //.doOnEach(System.out::println);
 
-    Flux<Card> cardFluxTakeLast6 = cardFlux.takeLast(6);
-    Flux<Card> cardFluxTakeLast6again = cardFlux.take(6);
-    Flux<Card> cardFluxCutCards = cardFluxTakeLast6.concatWith(cardFluxTakeLast6again);
+//    Flux<Card> cutCards1 = cardFlux.takeLast(6);
+//    Flux<Card> cutCards2 = cardFlux.take(6);
+//    Flux<Tuple2<Card, Card>> tuples = Flux.zip(cutCards1, cutCards2);
+//
+//    Flux<Card> flatMapped = tuples.flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()));
 
-
-
-    //Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux);
-
-    return cardFluxCutCards;
+    return riffleShuffle(riffleShuffle(riffleShuffle(riffleShuffle(riffleShuffle(cardFlux))))).take(5);
+    //return riffleShuffle(cardFlux);
   }
+
+  public Flux<Card> riffleShuffle(Flux<Card> cardFlux) {
+      int numCards = 52;
+      int cardsToCut = (int)(Math.random() * numCards);
+      Flux<Card> cutCards = cardFlux.takeLast(numCards - cardsToCut).concatWith(cardFlux.take(cardsToCut));
+      Flux<Card> cutCardsA = cutCards.take(numCards / 2);
+      Flux<Card> cutCardsB = cutCards.takeLast(numCards / 2);
+      Flux<Tuple2<Card, Card>> tuples = Flux.zip(cutCardsA, cutCardsB);
+
+      //return cutCards;
+      return tuples.flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()));
+  }
+
+
 
   /*
   @GetMapping("/carddeckwebclient")
