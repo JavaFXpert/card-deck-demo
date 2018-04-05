@@ -38,17 +38,16 @@ function dealCards() {
     //fetch(`http://localhost:8080/carddeck?numcards=5`)
     //fetch(`http://localhost:8080/carddeck?shuffled=true&numcards=6`)
     //fetch(`http://localhost:8080/carddeckbysuit?suit=DIAMONDS&shuffled=true&numcards=7`)
-    //fetch(`http://localhost:8080/carddeckmerge`)
+    fetch(`http://localhost:8080/carddeckmerge`)
     //fetch(`http://localhost:8080/carddeckmergeordered`)
     //fetch(`http://localhost:8080/carddeckmergesort`)
     //fetch(`http://localhost:8080/carddecktakelast`)
-    fetch(`http://localhost:8080/carddeckmergewith`)
+    //fetch(`http://localhost:8080/carddeckmergewith`)
         .then(cards => cards.json())
         .then(cards => {
           hitMeNode.style.display = "block";
     stayNode.style.display = "block";
 
-    //dealerCards.push(cards[0], cards[1], cards[2], cards[3]);
     cards.forEach((c, i) => {
         dealerCards.push(c);
     })

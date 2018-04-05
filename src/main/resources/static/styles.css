@@ -45,7 +45,7 @@ h2 {
   transform: translateY(-40px);
   display: flex;
   justify-content: center;
-  height: 168px;
+  height: 120px;
 }
 
 #player-area #announcement {
@@ -55,7 +55,7 @@ h2 {
 #player-cards {
   display: flex;
   justify-content: center;
-  height: 168px;
+  height: 120px;
 }
 
 #action-area {

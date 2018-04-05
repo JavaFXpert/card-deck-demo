@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.Comparator;
 
 @RestController
@@ -46,22 +47,27 @@ public class CardDeckController {
 
   @GetMapping("/carddeckmerge")
   public Flux<Card> getCardDeckMerge() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 13);//.sort(comparator);
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 13);//.sort(comparator);
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 13);//.sort(comparator);
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 13);//.sort(comparator);
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 13)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 13)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 13)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 13)
+            .delayElements(Duration.ofMillis(1));
 
-    Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux).take(12);
+    Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux)
+            .take(12);
 
     return cardFlux;
   }
 
   @GetMapping("/carddeckmergewith")
   public Flux<Card> getCardDeckMergeWith() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 6);//.sort(comparator);
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 6);//.sort(comparator);
-//    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 13);//.sort(comparator);
-//    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 13);//.sort(comparator);
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 6)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 6)
+            .delayElements(Duration.ofMillis(1));
 
     Flux<Card> cardFlux = heartsFlux.mergeWith(clubsFlux).take(12);
 
@@ -69,10 +75,14 @@ public class CardDeckController {
   }
   @GetMapping("/carddeckmergeordered")
   public Flux<Card> getCardDeckMergeOrdered() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 3);
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 3);
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 3);
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 3);
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 3)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 3)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 3)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 3)
+            .delayElements(Duration.ofMillis(1));
 
     Flux<Card> cardFlux = Flux.mergeOrdered(comparator, heartsFlux, clubsFlux, spadesFlux, diamondsFlux).take(12);
 
@@ -81,10 +91,14 @@ public class CardDeckController {
 
   @GetMapping("/carddeckmergesort")
   public Flux<Card> getCardDeckMergeSort() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 3);
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 3);
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 3);
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 3);
+    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 3)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 3)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 3)
+            .delayElements(Duration.ofMillis(1));
+    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 3)
+            .delayElements(Duration.ofMillis(1));
 
     Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux)
             .sort(comparator)
