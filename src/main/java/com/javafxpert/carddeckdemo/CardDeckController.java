@@ -31,7 +31,7 @@ public class CardDeckController {
   }
 
   @GetMapping("/carddeck")
-  public Flux<Card> getCardDeck(@RequestParam(defaultValue = "false") boolean shuffled, @RequestParam(defaultValue = "10") int numcards) {
+  public Flux<Card> getCardDeck(@RequestParam(defaultValue = "52") int numcards) {
 
     Flux<Card> cardFlux = cardDeckService.getNewDeck()
             .take(numcards);
