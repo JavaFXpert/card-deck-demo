@@ -23,17 +23,46 @@ let newDeckNode = document.getElementById("new-game")
 let nextHandNode = document.getElementById("next-hand");
 let hitMeNode = document.getElementById("hit-me");
 let stayNode = document.getElementById("stay");
+let dealPokerHandNode = document.getElementById("deal-poker-hand");
+let shuffleDealNode = document.getElementById("shuffle-deal");
 
 
 // On click events
-newDeckNode.onclick = getNewDeck;
+newDeckNode.onclick = () => dealCards('newDeck');
 //nextHandNode.onclick = newHand;
-nextHandNode.onclick = dealCards;
-hitMeNode.onclick = ()=>hitMe('player');
-stayNode.onclick = ()=>setTimeout(()=>dealerPlays(), 600);
+nextHandNode.onclick = () => dealCards('cutCards');
+hitMeNode.onclick = () => dealCards('overhandShuffle');
+stayNode.onclick = () => dealCards('riffleShuffle');
+dealPokerHandNode.onclick = () => dealCards('dealPokerHand');
+shuffleDealNode.onclick = () => dealCards('shuffleDeal');
 
-function dealCards() {
+function dealCards(modeArg) {
+    //alert("modeArg: " + modeArg)
+    var fetchStr = "http://localhost:8080/carddeck?numcards=26";
+    if (modeArg === "newDeck") {
+        fetchStr = "http://localhost:8080/carddeck?numcards=26";
+    }
+    else if (modeArg === "cutCards") {
+        fetchStr = "http://localhost:8080/carddeckcut?cards=" + cardStr;
+    }
+    else if (modeArg === "overhandShuffle") {
+        fetchStr = "http://localhost:8080/carddeckoverhandshuffle?cards=" + cardStr;
+    }
+    else if (modeArg === "riffleShuffle") {
+        fetchStr = "http://localhost:8080/carddeckriffleshuffle?cards=" + cardStr;
+    }
+    else if (modeArg === "dealPokerHand") {
+        fetchStr = "http://localhost:8080/carddeckdealpokerhand?cards=" + cardStr;
+    }
+    else if (modeArg === "shuffleDeal") {
+        fetchStr = "http://localhost:8080/carddeckshuffledeal?cards=" + cardStr;
+    }
     resetPlayingArea();
+    nextHandNode.style.display = "block";
+    hitMeNode.style.display = "block";
+    stayNode.style.display = "block";
+    dealPokerHandNode.style.display = "block";
+    shuffleDealNode.style.display = "block";
 
     //fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=4`)
     //fetch(`http://localhost:8080/carddeck?numcards=5`)
@@ -44,14 +73,15 @@ function dealCards() {
     //fetch(`http://localhost:8080/carddeckmergesort`)
     //fetch(`http://localhost:8080/carddecktakelast`)
     //fetch(`http://localhost:8080/carddeckmergewith`)
-    fetch("http://localhost:8080/carddeckcut?cards=" + cardStr)
+    //fetch("http://localhost:8080/carddeckcut?cards=" + cardStr)
     //fetch(`http://localhost:8080/carddeckoverhandshuffle`)
     //fetch(`http://localhost:8080/carddeckriffleshuffle`)
     //fetch(`http://localhost:8080/carddeckshufflewell`)
+    fetch(fetchStr)
         .then(cards => cards.json())
         .then(cards => {
-          hitMeNode.style.display = "block";
-    stayNode.style.display = "block";
+          // hitMeNode.style.display = "block";
+          // stayNode.style.display = "block";
 
     cardStr = "";
     cards.forEach((c, i) => {

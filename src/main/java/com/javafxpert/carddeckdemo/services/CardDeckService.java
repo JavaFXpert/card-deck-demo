@@ -7,10 +7,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
+import java.util.Comparator;
+
 @Service
 public class CardDeckService {
   private final CardDeckDemoProperties cardDeckDemoProperties;
   private String imagesUri = "";
+  private final Comparator<Card> comparator = (c1, c2) -> c1.getWorth() - c2.getWorth();
 
   public CardDeckService(CardDeckDemoProperties cardDeckDemoProperties) {
     this.cardDeckDemoProperties = cardDeckDemoProperties;
@@ -106,9 +109,22 @@ public class CardDeckService {
     return tuples.flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()));
   }
 
+  public Flux<Card> dealPokerHand(Flux<Card> cardFlux) {
+    int totalCards = cardFlux.count().block().intValue();
+    Flux<Card> pokerHand = cardFlux.elementAt(0)
+        .concatWith(cardFlux.elementAt(2))
+        .concatWith(cardFlux.elementAt(4))
+        .concatWith(cardFlux.elementAt(6))
+        .concatWith(cardFlux.elementAt(8))
+        .sort(comparator);
+
+    return pokerHand;
+  }
+
   public Flux<Card> shuffleWell(Flux<Card> cardFlux) {
     int totalCards = cardFlux.count().block().intValue();
 
+    //TODO: Make more Fluxy
     return cutCards(riffleShuffle(overhandShuffle(riffleShuffle(overhandShuffle((riffleShuffle(overhandShuffle(cardFlux))))))));
   }
 

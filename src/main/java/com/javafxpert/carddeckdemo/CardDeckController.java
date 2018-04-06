@@ -21,7 +21,6 @@ import java.util.List;
 public class CardDeckController {
   private final CardDeckService cardDeckService;
   private final CardDeckDemoProperties cardDeckDemoProperties;
-  private final Comparator<Card> comparator = (c1, c2) -> c1.getWorth() - c2.getWorth();
 
   @Autowired
   public CardDeckController(CardDeckService cardDeckService,
@@ -47,125 +46,85 @@ public class CardDeckController {
     return cardFlux;
   }
 
-  @GetMapping("/carddeckmerge")
-  public Flux<Card> getCardDeckMerge() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 13)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 13)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 13)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 13)
-            .delayElements(Duration.ofMillis(1));
-
-    Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux)
-            .take(12);
-
-    return cardFlux;
-  }
-
-  @GetMapping("/carddeckmergewith")
-  public Flux<Card> getCardDeckMergeWith() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 6)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 6)
-            .delayElements(Duration.ofMillis(1));
-
-    Flux<Card> cardFlux = heartsFlux.mergeWith(clubsFlux).take(12);
-
-    return cardFlux;
-  }
-  @GetMapping("/carddeckmergeordered")
-  public Flux<Card> getCardDeckMergeOrdered() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 3)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 3)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 3)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 3)
-            .delayElements(Duration.ofMillis(1));
-
-    Flux<Card> cardFlux = Flux.mergeOrdered(comparator, heartsFlux, clubsFlux, spadesFlux, diamondsFlux).take(12);
-
-    return cardFlux;
-  }
-
-  @GetMapping("/carddeckmergesort")
-  public Flux<Card> getCardDeckMergeSort() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", true, 3)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", true, 3)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", true, 3)
-            .delayElements(Duration.ofMillis(1));
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", true, 3)
-            .delayElements(Duration.ofMillis(1));
-
-    Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux)
-            .sort(comparator)
-            .take(12);
-
-    return cardFlux;
-  }
-
-  @GetMapping("/carddecktakelast")
-  public Flux<Card> getCardDeckTakeLast() {
-    Flux<Card> clubsFlux = getCardDeckBySuit("CLUBS", false, 13).sort(comparator).takeLast(3);
-    Flux<Card> heartsFlux = getCardDeckBySuit("HEARTS", false, 13).sort(comparator).takeLast(3);
-    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 13).sort(comparator).takeLast(3);
-    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 13).sort(comparator).takeLast(3);
-
-    Flux<Card> cardFlux = Flux.merge(heartsFlux, clubsFlux, spadesFlux, diamondsFlux)
-            .take(12);
-
-    return cardFlux;
-  }
-
   @GetMapping("/carddeckcut")
   public Flux<Card> getCardDeckCut(@RequestParam (defaultValue = "") String cards) {
     System.out.println("cards: " + cards);
-    int totalCards = 10;
     String cardStr = cards.replaceAll(" ", "");
     Flux<Card> cardFlux;
 
-    if (cardStr.length() == 0) {
-      cardFlux = cardDeckService.getNewDeck()
-          .take(totalCards);
+    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
+      cardFlux = cardDeckService.getNewDeck();
     }
     else {
       cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
-          //.doOnEach(System.out::println);
     }
 
     return cardDeckService.cutCards(cardFlux);
   }
 
   @GetMapping("/carddeckoverhandshuffle")
-  public Flux<Card> getCardDeckOverhandShuffle() {
-    int totalCards = 10;
+  public Flux<Card> getCardDeckOverhandShuffle(@RequestParam (defaultValue = "") String cards) {
+    System.out.println("cards: " + cards);
+    String cardStr = cards.replaceAll(" ", "");
+    Flux<Card> cardFlux;
 
-    Flux<Card> cardFlux = cardDeckService.getNewDeck()
-        .take(totalCards);
+    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
+      cardFlux = cardDeckService.getNewDeck();
+    }
+    else {
+      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
+    }
+
     return cardDeckService.overhandShuffle(cardFlux);
   }
 
   @GetMapping("/carddeckriffleshuffle")
-  public Flux<Card> getCardDeckRiffleShuffle() {
-    int totalCards = 10;
+  public Flux<Card> getCardDeckRiffleShuffle(@RequestParam (defaultValue = "") String cards) {
+    System.out.println("cards: " + cards);
+    String cardStr = cards.replaceAll(" ", "");
+    Flux<Card> cardFlux;
 
-    Flux<Card> cardFlux = cardDeckService.getNewDeck()
-        .take(totalCards);
+    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
+      cardFlux = cardDeckService.getNewDeck();
+    }
+    else {
+      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
+    }
+
     return cardDeckService.riffleShuffle(cardFlux);
   }
 
-  @GetMapping("/carddeckshufflewell")
-  public Flux<Card> getCardDeckShuffleWell() {
-    int totalCards = 52;
+  @GetMapping("/carddeckdealpokerhand")
+  public Flux<Card> getCardDeckDealPokerHand(@RequestParam (defaultValue = "") String cards) {
+    System.out.println("cards: " + cards);
+    String cardStr = cards.replaceAll(" ", "");
+    Flux<Card> cardFlux;
 
-    Flux<Card> cardFlux = cardDeckService.getNewDeck().take(totalCards);
+    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
+      cardFlux = cardDeckService.getNewDeck();
+    }
+    else {
+      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
+    }
 
-    return cardDeckService.shuffleWell(cardFlux).take(52);//.sort(comparator);
+    return cardDeckService.dealPokerHand(cardFlux);
+  }
+
+  @GetMapping("/carddeckshuffledeal")
+  public Flux<Card> getCardDeckShuffleDeal(@RequestParam (defaultValue = "") String cards) {
+    System.out.println("cards: " + cards);
+    String cardStr = cards.replaceAll(" ", "");
+    Flux<Card> cardFlux;
+
+    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
+      cardFlux = cardDeckService.getNewDeck();
+    }
+    else {
+      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
+    }
+
+    //TODO: Make more Fluxy
+    return cardDeckService.dealPokerHand(cardDeckService.shuffleWell(cardFlux));
   }
 
 
