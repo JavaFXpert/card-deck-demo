@@ -73,4 +73,10 @@ public class CardDeckService {
         new Card("QD", imagesUri),
         new Card("KD", imagesUri));
   }
+
+  public Flux<Card> cutCards(Flux<Card> cardFlux) {
+    int numCards = 26;
+    int cardsToCut = (int)(Math.random() * numCards);
+    return Flux.concat(cardFlux.takeLast(numCards - cardsToCut), cardFlux.take(cardsToCut));
+  }
 }

@@ -145,10 +145,12 @@ public class CardDeckController {
   @GetMapping("/carddeckcut")
   public Flux<Card> getCardDeckCut() {
     int numCards = 26;
-    Flux<Card> cardFlux = cardDeckService.getNewDeck().take(numCards);
-    int cardsToCut = (int)(Math.random() * numCards);
-    Flux<Card> cutCards = Flux.concat(cardFlux.takeLast(numCards - cardsToCut), cardFlux.take(cardsToCut));
-    return cutCards;
+    return cardDeckService.cutCards(cardDeckService.getNewDeck().take(numCards));
+//    int numCards = 26;
+//    Flux<Card> cardFlux = cardDeckService.getNewDeck().take(numCards);
+//    int cardsToCut = (int)(Math.random() * numCards);
+//    Flux<Card> cutCards = Flux.concat(cardFlux.takeLast(numCards - cardsToCut), cardFlux.take(cardsToCut));
+//    return cutCards;
   }
 
   @GetMapping("/carddeckoverhandshuffle")
