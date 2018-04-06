@@ -33,7 +33,7 @@ public class CardDeckController {
   @GetMapping("/carddeck")
   public Flux<Card> getCardDeck(@RequestParam(defaultValue = "false") boolean shuffled, @RequestParam(defaultValue = "10") int numcards) {
 
-    Flux<Card> cardFlux = cardDeckService.getAllCards(shuffled)
+    Flux<Card> cardFlux = cardDeckService.getNewDeck()
             .take(numcards);
     return cardFlux;
   }
@@ -41,7 +41,7 @@ public class CardDeckController {
   @GetMapping("/carddeckbysuit")
   public Flux<Card> getCardDeckBySuit(@RequestParam(defaultValue = "SPADES") String suit, @RequestParam(defaultValue = "false") boolean shuffled, @RequestParam(defaultValue = "10") int numcards) {
 
-    Flux<Card> cardFlux = cardDeckService.getAllCards(shuffled)
+    Flux<Card> cardFlux = cardDeckService.getNewDeck()
             .filter(card -> card.getSuit().equalsIgnoreCase(suit))
             .take(numcards);
     return cardFlux;
@@ -129,7 +129,7 @@ public class CardDeckController {
 //    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 13);
 //    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 13);
 //
-    Flux<Card> cardFlux = cardDeckService.getAllCards(false).take(26);
+    Flux<Card> cardFlux = cardDeckService.getNewDeck().take(26);
             //.doOnEach(System.out::println);
 
 //    Flux<Card> cutCards1 = cardFlux.takeLast(6);
@@ -145,7 +145,7 @@ public class CardDeckController {
   @GetMapping("/carddeckcut")
   public Flux<Card> getCardDeckCut() {
     int numCards = 26;
-    Flux<Card> cardFlux = cardDeckService.getAllCards(false).take(numCards);
+    Flux<Card> cardFlux = cardDeckService.getNewDeck().take(numCards);
     int cardsToCut = (int)(Math.random() * numCards);
     Flux<Card> cutCards = Flux.concat(cardFlux.takeLast(numCards - cardsToCut), cardFlux.take(cardsToCut));
     return cutCards;
@@ -158,7 +158,7 @@ public class CardDeckController {
 //    Flux<Card> spadesFlux = getCardDeckBySuit("SPADES", false, 13);
 //    Flux<Card> diamondsFlux = getCardDeckBySuit("DIAMONDS", false, 13);
 //
-    Flux<Card> cardFlux = cardDeckService.getAllCards(false).take(26);
+    Flux<Card> cardFlux = cardDeckService.getNewDeck().take(26);
     //.doOnEach(System.out::println);
 
 //    Flux<Card> cutCards1 = cardFlux.takeLast(6);
@@ -175,7 +175,7 @@ public class CardDeckController {
 
   @GetMapping("/carddeckshufflewell")
   public Flux<Card> getCardDeckShuffleWell() {
-    Flux<Card> cardFlux = cardDeckService.getAllCards(false).take(26);
+    Flux<Card> cardFlux = cardDeckService.getNewDeck().take(26);
 
 
     //return riffleShuffle(overhandShuffle(riffleShuffle(overhandShuffle(cardFlux)))).take(26);
@@ -233,7 +233,7 @@ public class CardDeckController {
     Flux<Card> cardFlux = cardDeckWebClient.get()
             .uri(builder -> builder.queryParam("shuffled", shuffled).queryParam("request", numcards).build())
             .
-    return cardDeckService.getAllCards(shuffled);
+    return cardDeckService.getNewDeck(shuffled);
 
 
     CardDeckSubscriber<Card> cardDeckSubscriber = new CardDeckSubscriber<>();
