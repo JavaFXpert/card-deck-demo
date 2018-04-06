@@ -43,10 +43,10 @@ function dealCards() {
     //fetch(`http://localhost:8080/carddeckmergesort`)
     //fetch(`http://localhost:8080/carddecktakelast`)
     //fetch(`http://localhost:8080/carddeckmergewith`)
-    //fetch(`http://localhost:8080/carddeckriffleshuffle`)
+    //fetch(`http://localhost:8080/carddeckcut`)
     //fetch(`http://localhost:8080/carddeckoverhandshuffle`)
-    fetch(`http://localhost:8080/carddeckcut`)
-    //fetch(`http://localhost:8080/carddeckshufflewell`)
+    //fetch(`http://localhost:8080/carddeckriffleshuffle`)
+    fetch(`http://localhost:8080/carddeckshufflewell`)
         .then(cards => cards.json())
         .then(cards => {
           hitMeNode.style.display = "block";

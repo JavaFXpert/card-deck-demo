@@ -4,6 +4,8 @@ import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
 import com.javafxpert.carddeckdemo.model.Card;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 @Service
 public class CardDeckService {
@@ -75,8 +77,39 @@ public class CardDeckService {
   }
 
   public Flux<Card> cutCards(Flux<Card> cardFlux) {
-    int numCards = 26;
-    int cardsToCut = (int)(Math.random() * numCards);
-    return Flux.concat(cardFlux.takeLast(numCards - cardsToCut), cardFlux.take(cardsToCut));
+    int totalCards = cardFlux.count().block().intValue();
+    int cardsToCut = (int)(Math.random() * (totalCards - 1) + 1);
+    return Flux.concat(cardFlux.takeLast(totalCards - cardsToCut), cardFlux.take(cardsToCut));
   }
+
+  public Flux<Card> overhandShuffle(Flux<Card> cardFlux) {
+    int totalCards = cardFlux.count().block().intValue();
+    int maxChunk = 5;
+    int numCardsLeft = totalCards;
+    Flux<Card> overhandShuffledCardFlux = Flux.empty();
+    while (numCardsLeft > 0) {
+      Flux<Card> tempCardFlux = cardFlux.take(numCardsLeft);
+      int numCardsToTransfer = Math.min((int)(Math.random() * maxChunk + 1), numCardsLeft);
+      overhandShuffledCardFlux = Flux.concat(overhandShuffledCardFlux, tempCardFlux.takeLast(numCardsToTransfer));
+
+      numCardsLeft -= numCardsToTransfer;
+    }
+    return overhandShuffledCardFlux;
+  }
+
+  public Flux<Card> riffleShuffle(Flux<Card> cardFlux) {
+    int totalCards = cardFlux.count().block().intValue();
+    Flux<Card> cutCardsA = cardFlux.take(totalCards / 2);
+    Flux<Card> cutCardsB = cardFlux.takeLast(totalCards / 2);
+    Flux<Tuple2<Card, Card>> tuples = Flux.zip(cutCardsA, cutCardsB);
+
+    return tuples.flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()));
+  }
+
+  public Flux<Card> shuffleWell(Flux<Card> cardFlux) {
+    int totalCards = cardFlux.count().block().intValue();
+
+    return cutCards(riffleShuffle(overhandShuffle(riffleShuffle(overhandShuffle((riffleShuffle(overhandShuffle(cardFlux))))))));
+  }
+
 }
