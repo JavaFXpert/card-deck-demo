@@ -134,6 +134,7 @@ public class CardDeckController {
     }
     else {
       cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
+          //.doOnEach(System.out::println);
     }
 
     return cardDeckService.cutCards(cardFlux);

@@ -7,6 +7,7 @@ let roundWon = false;
 let roundTied = false;
 let playerScore = 0;
 let dealerScore = 0;
+let cardStr = ""; // Comma-delimited string of card codes held in the client
 
 // score nodes
 let dealerScoreNode = document.getElementById("dealer-number");
@@ -43,7 +44,7 @@ function dealCards() {
     //fetch(`http://localhost:8080/carddeckmergesort`)
     //fetch(`http://localhost:8080/carddecktakelast`)
     //fetch(`http://localhost:8080/carddeckmergewith`)
-    fetch(`http://localhost:8080/carddeckcut`)
+    fetch("http://localhost:8080/carddeckcut?cards=" + cardStr)
     //fetch(`http://localhost:8080/carddeckoverhandshuffle`)
     //fetch(`http://localhost:8080/carddeckriffleshuffle`)
     //fetch(`http://localhost:8080/carddeckshufflewell`)
@@ -59,15 +60,21 @@ function dealCards() {
     dealerScore = "?";
     dealerScoreNode.textContent = dealerScore;
 
+    cardStr = "";
     dealerCards.forEach((c, i) => {
         let cardDomElement = document.createElement("img");
-    if(i===-1) {
-        cardDomElement.src = 'http://127.0.0.1:8080/images/gray_back_reactor.png';
-    } else {
-        cardDomElement.src = c.image;
-    }
-    dealerCardsNode.appendChild(cardDomElement)
-})
+        if(i===-1) {
+            cardDomElement.src = 'http://127.0.0.1:8080/images/gray_back_reactor.png';
+        }
+        else {
+            cardDomElement.src = c.image;
+        }
+        cardStr += c.code;
+        if (i < dealerCards.length - 1) {
+            cardStr += ",";
+        }
+        dealerCardsNode.appendChild(cardDomElement)
+    })
 
     playerCards.forEach(card => {
         let cardDomElement = document.createElement("img");
