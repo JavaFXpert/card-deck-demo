@@ -112,4 +112,11 @@ public class CardDeckService {
     return cutCards(riffleShuffle(overhandShuffle(riffleShuffle(overhandShuffle((riffleShuffle(overhandShuffle(cardFlux))))))));
   }
 
+  public Flux<Card> createFluxFromCardsString(String cardStr) {
+    String[] cardStrArray = cardStr.split(",");
+    Flux<Card> cardFlux = Flux.fromArray(cardStrArray)
+        .map(code -> new Card(code, imagesUri));
+    return cardFlux;
+  }
+
 }

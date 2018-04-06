@@ -123,11 +123,19 @@ public class CardDeckController {
   }
 
   @GetMapping("/carddeckcut")
-  public Flux<Card> getCardDeckCut() {
+  public Flux<Card> getCardDeckCut(@RequestParam (defaultValue = "") String cards) {
     int totalCards = 10;
+    String cardStr = cards.replaceAll(" ", "");
+    Flux<Card> cardFlux;
 
-    Flux<Card> cardFlux = cardDeckService.getNewDeck()
-        .take(totalCards);
+    if (cardStr.length() == 0) {
+      cardFlux = cardDeckService.getNewDeck()
+          .take(totalCards);
+    }
+    else {
+      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
+    }
+
     return cardDeckService.cutCards(cardFlux);
   }
 
@@ -155,7 +163,7 @@ public class CardDeckController {
 
     Flux<Card> cardFlux = cardDeckService.getNewDeck().take(totalCards);
 
-    return cardDeckService.shuffleWell(cardFlux).take(5).sort(comparator);
+    return cardDeckService.shuffleWell(cardFlux).take(52);//.sort(comparator);
   }
 
 
