@@ -124,6 +124,7 @@ public class CardDeckController {
 
   @GetMapping("/carddeckcut")
   public Flux<Card> getCardDeckCut(@RequestParam (defaultValue = "") String cards) {
+    System.out.println("cards: " + cards);
     int totalCards = 10;
     String cardStr = cards.replaceAll(" ", "");
     Flux<Card> cardFlux;

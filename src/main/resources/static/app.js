@@ -53,15 +53,9 @@ function dealCards() {
           hitMeNode.style.display = "block";
     stayNode.style.display = "block";
 
+    cardStr = "";
     cards.forEach((c, i) => {
         dealerCards.push(c);
-    })
-
-    dealerScore = "?";
-    dealerScoreNode.textContent = dealerScore;
-
-    cardStr = "";
-    dealerCards.forEach((c, i) => {
         let cardDomElement = document.createElement("img");
         if(i===-1) {
             cardDomElement.src = 'http://127.0.0.1:8080/images/gray_back_reactor.png';
@@ -70,11 +64,14 @@ function dealCards() {
             cardDomElement.src = c.image;
         }
         cardStr += c.code;
-        if (i < dealerCards.length - 1) {
+        if (i < cards.length - 1) {
             cardStr += ",";
         }
         dealerCardsNode.appendChild(cardDomElement)
     })
+
+    dealerScore = "?";
+    dealerScoreNode.textContent = dealerScore;
 
     playerCards.forEach(card => {
         let cardDomElement = document.createElement("img");
