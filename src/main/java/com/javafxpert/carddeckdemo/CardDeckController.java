@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
 import java.time.Duration;
@@ -18,6 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
+@RequestMapping("/cards/deck")
 public class CardDeckController {
   private final CardDeckService cardDeckService;
   private final CardDeckDemoProperties cardDeckDemoProperties;
@@ -29,102 +32,78 @@ public class CardDeckController {
     this.cardDeckDemoProperties = cardDeckDemoProperties;
   }
 
-  @GetMapping("/carddeck")
+  @GetMapping("/")
   public Flux<Card> getCardDeck(@RequestParam(defaultValue = "52") int numcards) {
-
-    Flux<Card> cardFlux = cardDeckService.getNewDeck()
-            .take(numcards);
-    return cardFlux;
+    return cardDeckService.getNewDeck()
+                          .take(numcards);
   }
 
-  @GetMapping("/carddeckbysuit")
-  public Flux<Card> getCardDeckBySuit(@RequestParam(defaultValue = "SPADES") String suit, @RequestParam(defaultValue = "false") boolean shuffled, @RequestParam(defaultValue = "10") int numcards) {
+  @GetMapping("/{suit}")
+  public Flux<Card> getCardDeckBySuit(
+          @PathVariable String suit,
+          @RequestParam(defaultValue = "false") boolean shuffled,
+          @RequestParam(defaultValue = "10") int numcards
+  ) {
 
-    Flux<Card> cardFlux = cardDeckService.getNewDeck()
-            .filter(card -> card.getSuit().equalsIgnoreCase(suit))
-            .take(numcards);
-    return cardFlux;
+    return cardDeckService.getNewDeck()
+                          .filter(card -> card.getSuit().equalsIgnoreCase(suit))
+                          .take(numcards);
   }
 
-  @GetMapping("/carddeckcut")
+  @GetMapping("/cut")
   public Flux<Card> getCardDeckCut(@RequestParam (defaultValue = "") String cards) {
-    System.out.println("cards: " + cards);
-    String cardStr = cards.replaceAll(" ", "");
-    Flux<Card> cardFlux;
-
-    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
-      cardFlux = cardDeckService.getNewDeck();
-    }
-    else {
-      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
-    }
-
-    return cardDeckService.cutCards(cardFlux);
+    return Mono.just(cards)
+               .log()
+               .map(c -> cards.replaceAll(" ", ""))
+               .filter(c -> c.length() < 30)
+               .flatMapMany(cardDeckService::createFluxFromCardsString)
+               .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
+               .transform(cardDeckService::cutCards);
   }
 
-  @GetMapping("/carddeckoverhandshuffle")
+  @GetMapping("/overhandshuffle")
   public Flux<Card> getCardDeckOverhandShuffle(@RequestParam (defaultValue = "") String cards) {
-    System.out.println("cards: " + cards);
-    String cardStr = cards.replaceAll(" ", "");
-    Flux<Card> cardFlux;
-
-    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
-      cardFlux = cardDeckService.getNewDeck();
-    }
-    else {
-      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
-    }
-
-    return cardDeckService.overhandShuffle(cardFlux);
+	  return Mono.just(cards)
+	             .log()
+	             .map(c -> cards.replaceAll(" ", ""))
+	             .filter(c -> c.length() < 30)
+	             .flatMapMany(cardDeckService::createFluxFromCardsString)
+	             .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
+	             .transform(cardDeckService::overhandShuffle);
   }
 
-  @GetMapping("/carddeckriffleshuffle")
+  @GetMapping("/riffleshuffle")
   public Flux<Card> getCardDeckRiffleShuffle(@RequestParam (defaultValue = "") String cards) {
-    System.out.println("cards: " + cards);
-    String cardStr = cards.replaceAll(" ", "");
-    Flux<Card> cardFlux;
-
-    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
-      cardFlux = cardDeckService.getNewDeck();
-    }
-    else {
-      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
-    }
-
-    return cardDeckService.riffleShuffle(cardFlux);
+    return Mono.just(cards)
+               .log()
+               .map(c -> cards.replaceAll(" ", ""))
+               .filter(c -> c.length() < 30)
+               .flatMapMany(cardDeckService::createFluxFromCardsString)
+               .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
+               .transform(cardDeckService::riffleShuffle);
   }
 
-  @GetMapping("/carddeckdealpokerhand")
+  @GetMapping("/dealpokerhand")
   public Flux<Card> getCardDeckDealPokerHand(@RequestParam (defaultValue = "") String cards) {
-    System.out.println("cards: " + cards);
-    String cardStr = cards.replaceAll(" ", "");
-    Flux<Card> cardFlux;
-
-    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
-      cardFlux = cardDeckService.getNewDeck();
-    }
-    else {
-      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
-    }
-
-    return cardDeckService.dealPokerHand(cardFlux);
+    return Mono.just(cards)
+               .log()
+               .map(c -> cards.replaceAll(" ", ""))
+               .filter(c -> c.length() < 30)
+               .flatMapMany(cardDeckService::createFluxFromCardsString)
+               .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
+               .transform(cardDeckService::dealPokerHand);
   }
 
   @GetMapping("/carddeckshuffledeal")
   public Flux<Card> getCardDeckShuffleDeal(@RequestParam (defaultValue = "") String cards) {
-    System.out.println("cards: " + cards);
-    String cardStr = cards.replaceAll(" ", "");
-    Flux<Card> cardFlux;
-
-    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
-      cardFlux = cardDeckService.getNewDeck();
-    }
-    else {
-      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
-    }
-
-    return cardFlux.transform(cardDeckService::riffleShuffle)
-        .transform(cardDeckService::dealPokerHand);
+    return Mono.just(cards)
+               .log()
+               .map(c -> cards.replaceAll(" ", ""))
+               .filter(c -> c.length() < 30)
+               .flatMapMany(cardDeckService::createFluxFromCardsString)
+               .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
+               .transform(cardDeckService::riffleShuffle)
+               .transform(cardDeckService::dealPokerHand);
   }
 
 

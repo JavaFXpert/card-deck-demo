@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.util.Comparator;
 
@@ -80,16 +81,27 @@ public class CardDeckService {
   }
 
   public Flux<Card> cutCards(Flux<Card> cardFlux) {
-    int totalCards = cardFlux.count().block().intValue();
-    int cardsToCut = (int)(Math.random() * (totalCards - 1) + 1);
-    return Flux.concat(cardFlux.takeLast(totalCards - cardsToCut), cardFlux.take(cardsToCut));
+    return cardFlux.collectList()
+                   .map(list -> Tuples.of(Flux.fromIterable(list), (int)(Math.random() * (list.size() - 1) + 1)))
+                   .flatMapMany(tuple2 ->
+                       tuple2.getT1()
+                             .skip(tuple2.getT2())
+                             .concatWith(tuple2.getT1()
+                                               .take(tuple2.getT2()))
+                   );
   }
 
+  /**
+   * Will not work :(
+   * @param cardFlux
+   * @return
+   */
   public Flux<Card> overhandShuffle(Flux<Card> cardFlux) {
     int totalCards = cardFlux.count().block().intValue();
     int maxChunk = 5;
     int numCardsLeft = totalCards;
     Flux<Card> overhandShuffledCardFlux = Flux.empty();
+
     while (numCardsLeft > 0) {
       Flux<Card> tempCardFlux = cardFlux.take(numCardsLeft);
       int numCardsToTransfer = Math.min((int)(Math.random() * maxChunk + 1), numCardsLeft);
@@ -110,15 +122,12 @@ public class CardDeckService {
   }
 
   public Flux<Card> dealPokerHand(Flux<Card> cardFlux) {
-    int totalCards = cardFlux.count().block().intValue();
-    Flux<Card> pokerHand = cardFlux.elementAt(0)
-        .concatWith(cardFlux.elementAt(2))
-        .concatWith(cardFlux.elementAt(4))
-        .concatWith(cardFlux.elementAt(6))
-        .concatWith(cardFlux.elementAt(8))
-        .sort(comparator);
-
-    return pokerHand;
+    return cardFlux
+            .index()
+            .take(9)
+            .filter(t -> t.getT1() % 2 == 0)
+            .map(Tuple2::getT2)
+            .sort(comparator);
   }
 
   public Flux<Card> shuffleWell(Flux<Card> cardFlux) {
