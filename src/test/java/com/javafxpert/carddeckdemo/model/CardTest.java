@@ -1,8 +1,6 @@
 package com.javafxpert.carddeckdemo.model;
 
-import org.junit.jupiter.api.BeforeEach;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CardTest {
   Card cardAS = new Card("AS" , "");

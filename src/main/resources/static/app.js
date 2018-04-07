@@ -38,24 +38,24 @@ shuffleDealNode.onclick = () => dealCards('shuffleDeal');
 
 function dealCards(modeArg) {
     //alert("modeArg: " + modeArg)
-    var fetchStr = "http://localhost:8080/carddeck?numcards=26";
+    var fetchStr = "http://localhost:8080/cards/deck/new?numcards=52";
     if (modeArg === "newDeck") {
-        fetchStr = "http://localhost:8080/carddeck?numcards=26";
+        fetchStr = "http://localhost:8080/cards/deck/new?numcards=52";
     }
     else if (modeArg === "cutCards") {
-        fetchStr = "http://localhost:8080/carddeckcut?cards=" + cardStr;
+        fetchStr = "http://localhost:8080/cards/deck/cut?cards=" + cardStr;
     }
     else if (modeArg === "overhandShuffle") {
-        fetchStr = "http://localhost:8080/carddeckoverhandshuffle?cards=" + cardStr;
+        fetchStr = "http://localhost:8080/cards/deck/overhandshuffle?cards=" + cardStr;
     }
     else if (modeArg === "riffleShuffle") {
-        fetchStr = "http://localhost:8080/carddeckriffleshuffle?cards=" + cardStr;
+        fetchStr = "http://localhost:8080/cards/deck/riffleshuffle?cards=" + cardStr;
     }
     else if (modeArg === "dealPokerHand") {
-        fetchStr = "http://localhost:8080/carddeckdealpokerhand?cards=" + cardStr;
+        fetchStr = "http://localhost:8080/cards/deck/dealpokerhand?cards=" + cardStr;
     }
     else if (modeArg === "shuffleDeal") {
-        fetchStr = "http://localhost:8080/carddeckshuffledeal?cards=" + cardStr;
+        fetchStr = "http://localhost:8080/cards/deck/shuffledeal?cards=" + cardStr;
     }
     resetPlayingArea();
     nextHandNode.style.display = "block";
