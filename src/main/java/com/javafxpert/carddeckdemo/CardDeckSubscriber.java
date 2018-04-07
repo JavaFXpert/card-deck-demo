@@ -12,6 +12,6 @@ public class CardDeckSubscriber<Card> extends BaseSubscriber<Card> {
 
   public void hookOnNext(Card card) {
     System.out.println(card);
-    request(0);
+//    request(0); // wrong according to Reactive Streams spec <--
   }
 }
