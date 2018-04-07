@@ -133,8 +133,13 @@ public class CardDeckService {
   public Flux<Card> shuffleWell(Flux<Card> cardFlux) {
     int totalCards = cardFlux.count().block().intValue();
 
-    //TODO: Make more Fluxy
-    return cutCards(riffleShuffle(overhandShuffle(riffleShuffle(overhandShuffle((riffleShuffle(overhandShuffle(cardFlux))))))));
+    return cardFlux.transform(this::overhandShuffle)
+        .transform(this::riffleShuffle)
+        .transform(this::overhandShuffle)
+        .transform(this::riffleShuffle)
+        .transform(this::overhandShuffle)
+        .transform(this::riffleShuffle)
+        .transform(this::cutCards);
   }
 
   public Flux<Card> createFluxFromCardsString(String cardStr) {

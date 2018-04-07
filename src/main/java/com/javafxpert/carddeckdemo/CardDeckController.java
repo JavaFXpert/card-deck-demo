@@ -102,7 +102,7 @@ public class CardDeckController {
                .filter(c -> c.length() < 30)
                .flatMapMany(cardDeckService::createFluxFromCardsString)
                .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
-               .transform(cardDeckService::riffleShuffle)
+               .transform(cardDeckService::shuffleWell)
                .transform(cardDeckService::dealPokerHand);
   }
 
