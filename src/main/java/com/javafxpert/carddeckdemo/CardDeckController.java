@@ -82,19 +82,6 @@ public class CardDeckController {
                .flatMapMany(cardDeckService::createFluxFromCardsString)
                .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
                .transform(cardDeckService::riffleShuffle);
-
-//    String cardStr = cards.replaceAll(" ", "");
-//    Flux<Card> cardFlux;
-//
-//    if (cardStr.length() < 30) { // if there are less than 10 cards, get a new deck
-//      cardFlux = cardDeckService.getNewDeck();
-//    }
-//    else {
-//      cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
-//    }
-//
-//    return cardDeckService.riffleShuffle(cardFlux);
-
   }
 
   @GetMapping("/dealpokerhand")
