@@ -123,8 +123,8 @@ public class CardDeckController {
       cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
     }
 
-    //TODO: Make more Fluxy
-    return cardDeckService.dealPokerHand(cardDeckService.shuffleWell(cardFlux));
+    return cardFlux.transform(cardDeckService::riffleShuffle)
+        .transform(cardDeckService::dealPokerHand);
   }
 
 
