@@ -1,7 +1,5 @@
 // app state
-let deckID = "";
 let dealerCards = [];
-let playerCards = [];
 let roundLost = false;
 let roundWon = false;
 let roundTied = false;
@@ -11,11 +9,10 @@ let cardStr = ""; // Comma-delimited string of card codes held in the client
 
 // score nodes
 let dealerScoreNode = document.getElementById("dealer-number");
-let playerScoreNode = document.getElementById("player-number");
+// let playerScoreNode = document.getElementById("player-number");
 
 // card area nodes
 let dealerCardsNode = document.getElementById("dealer-cards");
-let playerCardsNode = document.getElementById("player-cards");
 
 // other nodes
 let announcementNode = document.getElementById("announcement");
@@ -96,11 +93,8 @@ function newHand() {
   fetch(`http://localhost:8080/carddeck?shuffled=true&request=4`)
   .then(res => res.json())
   .then(res => {
-    hitMeNode.style.display = "block";
-    stayNode.style.display = "block";
-
-    dealerCards.push(res[0], res[1])
-    playerCards.push(res[2], res[3])
+    // hitMeNode.style.display = "block";
+    // stayNode.style.display = "block";
 
     dealerScore = "?";
     dealerScoreNode.textContent = dealerScore;
@@ -115,19 +109,6 @@ function newHand() {
       dealerCardsNode.appendChild(cardDomElement)
     })
 
-    playerCards.forEach(card => {
-      let cardDomElement = document.createElement("img");
-      cardDomElement.src = card.image;
-      playerCardsNode.appendChild(cardDomElement)
-    })
-
-    playerScore = computeScore(playerCards);
-    if (playerScore === 21) {
-      roundWon = true;
-      announcementNode.textContent = "BlackJack! You Win!";
-    }
-    playerScoreNode.textContent = playerScore;
-
   })
   .catch(console.error)
 }
@@ -135,96 +116,15 @@ function newHand() {
 
 function resetPlayingArea() {
   dealerCards = [];
-  playerCards = [];
   roundLost = false;
   roundWon = false;
   roundTied = false;
   dealerScore = "";
-  playerScore = 0;
   dealerScoreNode.textContent = dealerScore;
   announcementNode.textContent = "";
   while (dealerCardsNode.firstChild) {
     dealerCardsNode.removeChild(dealerCardsNode.firstChild);
   }
-  while (playerCardsNode.firstChild) {
-    playerCardsNode.removeChild(playerCardsNode.firstChild);
-  }
 }
 
 
-function hitMe(target) {
-  if (roundLost || roundWon || roundTied) {return}
-  fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`)
-  .then(res => res.json())
-  .then(res => {
-
-    // If player
-    if (target === 'player') {
-      playerCards.push(res.cards[0])
-      let cardDomElement = document.createElement("img");
-      cardDomElement.src = res.cards[0].image;
-      playerCardsNode.appendChild(cardDomElement)
-
-      playerScore = computeScore(playerCards);
-
-      playerScoreNode.textContent = playerScore;
-      if (playerScore > 21) {
-        roundLost = true;
-        announcementNode.textContent = "You broke. Pay up."
-      }
-    }
-
-    // If dealer
-    if (target === 'dealer') {
-      let cardDomElement = document.createElement("img");
-      dealerCards.push(res.cards[0])
-      cardDomElement.src = res.cards[0].image;
-      dealerCardsNode.appendChild(cardDomElement)
-      dealerPlays();
-    }
-
-  })
-  .catch(console.log)
-}
-
-// function dealerPlays() {
-//   if (roundLost || roundWon || roundTied) {return}
-//   dealerScore = computeScore(dealerCards);
-//   dealerScoreNode.textContent = dealerScore;
-//   dealerCardsNode.firstChild.src = dealerCards[0].image;
-//   if (dealerScore < 17) {
-//     setTimeout(()=>hitMe('dealer'), 900)
-//   }
-//   else if (dealerScore > 21) {
-//     roundWon = true;
-//     announcementNode.textContent = "House broke. You Won the hand!";
-//   }
-//   else if (dealerScore > playerScore) {
-//     roundLost = true;
-//     announcementNode.textContent = "You Lost the hand...";
-//   }
-//   else if (dealerScore === playerScore) {
-//     roundTied = true;
-//     announcementNode.textContent = "Tie round.";
-//   }
-//   else {
-//     roundWon = true;
-//     announcementNode.textContent = "You Won the hand!";
-//   }
-// }
-//
-// function computeScore(cards) {
-//   let hasAce = false;
-//   score = cards.reduce((acc, card) => {
-//     if (card.value === "ACE") {
-//       hasAce = true;
-//       return acc + 1
-//     }
-//     if (isNaN(card.value)) { return acc + 10 }
-//     return acc + Number(card.value);
-//   }, 0)
-//   if (hasAce) {
-//     score = (score + 10) > 21 ? score : score + 10;
-//   }
-//   return score
-// }
