@@ -123,7 +123,7 @@ public class CardDeckController {
       cardFlux = cardDeckService.createFluxFromCardsString(cardStr);
     }
 
-    return cardFlux.transform(cardDeckService::riffleShuffle)
+    return cardFlux.transform(cardDeckService::shuffleWell)
         .transform(cardDeckService::dealPokerHand);
   }
 
