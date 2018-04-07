@@ -29,7 +29,6 @@ let shuffleDealNode = document.getElementById("shuffle-deal");
 
 // On click events
 newDeckNode.onclick = () => dealCards('newDeck');
-//nextHandNode.onclick = newHand;
 nextHandNode.onclick = () => dealCards('cutCards');
 hitMeNode.onclick = () => dealCards('overhandShuffle');
 stayNode.onclick = () => dealCards('riffleShuffle');
@@ -37,7 +36,6 @@ dealPokerHandNode.onclick = () => dealCards('dealPokerHand');
 shuffleDealNode.onclick = () => dealCards('shuffleDeal');
 
 function dealCards(modeArg) {
-    //alert("modeArg: " + modeArg)
     var fetchStr = "http://localhost:8080/cards/deck/new?numcards=52";
     if (modeArg === "newDeck") {
         fetchStr = "http://localhost:8080/cards/deck/new?numcards=52";
@@ -64,60 +62,30 @@ function dealCards(modeArg) {
     dealPokerHandNode.style.display = "block";
     shuffleDealNode.style.display = "block";
 
-    //fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=4`)
-    //fetch(`http://localhost:8080/carddeck?numcards=5`)
-    //fetch(`http://localhost:8080/carddeck?shuffled=true&numcards=6`)
-    //fetch(`http://localhost:8080/carddeckbysuit?suit=DIAMONDS&shuffled=true&numcards=7`)
-    //fetch(`http://localhost:8080/carddeckmerge`)
-    //fetch(`http://localhost:8080/carddeckmergeordered`)
-    //fetch(`http://localhost:8080/carddeckmergesort`)
-    //fetch(`http://localhost:8080/carddecktakelast`)
-    //fetch(`http://localhost:8080/carddeckmergewith`)
-    //fetch("http://localhost:8080/carddeckcut?cards=" + cardStr)
-    //fetch(`http://localhost:8080/carddeckoverhandshuffle`)
-    //fetch(`http://localhost:8080/carddeckriffleshuffle`)
-    //fetch(`http://localhost:8080/carddeckshufflewell`)
     fetch(fetchStr)
         .then(cards => cards.json())
         .then(cards => {
-          // hitMeNode.style.display = "block";
-          // stayNode.style.display = "block";
+          cardStr = "";
+          cards.forEach((c, i) => {
+              dealerCards.push(c);
+              let cardDomElement = document.createElement("img");
+              if(i===-1) {
+                  cardDomElement.src = 'http://127.0.0.1:8080/images/gray_back_reactor.png';
+              }
+              else {
+                  cardDomElement.src = c.image;
+              }
+              cardStr += c.code;
+              if (i < cards.length - 1) {
+                  cardStr += ",";
+              }
+              dealerCardsNode.appendChild(cardDomElement)
+          })
 
-    cardStr = "";
-    cards.forEach((c, i) => {
-        dealerCards.push(c);
-        let cardDomElement = document.createElement("img");
-        if(i===-1) {
-            cardDomElement.src = 'http://127.0.0.1:8080/images/gray_back_reactor.png';
-        }
-        else {
-            cardDomElement.src = c.image;
-        }
-        cardStr += c.code;
-        if (i < cards.length - 1) {
-            cardStr += ",";
-        }
-        dealerCardsNode.appendChild(cardDomElement)
-    })
-
-    dealerScore = "?";
-    dealerScoreNode.textContent = dealerScore;
-
-    playerCards.forEach(card => {
-        let cardDomElement = document.createElement("img");
-    cardDomElement.src = card.image;
-    playerCardsNode.appendChild(cardDomElement)
-})
-
-    playerScore = computeScore(playerCards);
-    if (playerScore === 21) {
-        roundWon = true;
-        announcementNode.textContent = "BlackJack! You Win!";
-    }
-    playerScoreNode.textContent = playerScore;
-
-})
-.catch(console.error)
+          dealerScore = "?";
+          dealerScoreNode.textContent = dealerScore;
+        })
+        .catch(console.error)
 }
 
 
@@ -183,22 +151,6 @@ function resetPlayingArea() {
   }
 }
 
-function getNewDeck() {
-  resetPlayingArea();
-    nextHandNode.style.display = "block";
-    hitMeNode.style.display = "none";
-    stayNode.style.display = "none";
-  // fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
-  // fetch('https://deckofcardsapi.com/api/deck/new/')
-  // .then(res => res.json())
-  // .then(res => {
-  //   deckID = res.deck_id;
-  //   nextHandNode.style.display = "block";
-  //   hitMeNode.style.display = "none";
-  //   stayNode.style.display = "none";
-  // })
-  // .catch(console.error)
-}
 
 function hitMe(target) {
   if (roundLost || roundWon || roundTied) {return}
@@ -235,44 +187,44 @@ function hitMe(target) {
   .catch(console.log)
 }
 
-function dealerPlays() {
-  if (roundLost || roundWon || roundTied) {return}
-  dealerScore = computeScore(dealerCards);
-  dealerScoreNode.textContent = dealerScore;
-  dealerCardsNode.firstChild.src = dealerCards[0].image;
-  if (dealerScore < 17) {
-    setTimeout(()=>hitMe('dealer'), 900)
-  }
-  else if (dealerScore > 21) {
-    roundWon = true;
-    announcementNode.textContent = "House broke. You Won the hand!";
-  }
-  else if (dealerScore > playerScore) {
-    roundLost = true;
-    announcementNode.textContent = "You Lost the hand...";
-  }
-  else if (dealerScore === playerScore) {
-    roundTied = true;
-    announcementNode.textContent = "Tie round.";
-  }
-  else {
-    roundWon = true;
-    announcementNode.textContent = "You Won the hand!";
-  }
-}
-
-function computeScore(cards) {
-  let hasAce = false;
-  score = cards.reduce((acc, card) => {
-    if (card.value === "ACE") {
-      hasAce = true;
-      return acc + 1
-    }
-    if (isNaN(card.value)) { return acc + 10 }
-    return acc + Number(card.value);
-  }, 0)
-  if (hasAce) {
-    score = (score + 10) > 21 ? score : score + 10;
-  }
-  return score
-}
+// function dealerPlays() {
+//   if (roundLost || roundWon || roundTied) {return}
+//   dealerScore = computeScore(dealerCards);
+//   dealerScoreNode.textContent = dealerScore;
+//   dealerCardsNode.firstChild.src = dealerCards[0].image;
+//   if (dealerScore < 17) {
+//     setTimeout(()=>hitMe('dealer'), 900)
+//   }
+//   else if (dealerScore > 21) {
+//     roundWon = true;
+//     announcementNode.textContent = "House broke. You Won the hand!";
+//   }
+//   else if (dealerScore > playerScore) {
+//     roundLost = true;
+//     announcementNode.textContent = "You Lost the hand...";
+//   }
+//   else if (dealerScore === playerScore) {
+//     roundTied = true;
+//     announcementNode.textContent = "Tie round.";
+//   }
+//   else {
+//     roundWon = true;
+//     announcementNode.textContent = "You Won the hand!";
+//   }
+// }
+//
+// function computeScore(cards) {
+//   let hasAce = false;
+//   score = cards.reduce((acc, card) => {
+//     if (card.value === "ACE") {
+//       hasAce = true;
+//       return acc + 1
+//     }
+//     if (isNaN(card.value)) { return acc + 10 }
+//     return acc + Number(card.value);
+//   }, 0)
+//   if (hasAce) {
+//     score = (score + 10) > 21 ? score : score + 10;
+//   }
+//   return score
+// }
