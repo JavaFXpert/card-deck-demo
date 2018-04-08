@@ -27,6 +27,17 @@ public class ShuffleUtils {
    * @return
    */
   public static Flux<Card> overhandShuffle(Flux<Card> cardFlux) {
+    /*
+    cardFlux.collectList()
+      .map(list -> Tuples.of(Flux.fromIterable(list), (int)(Math.random() * (list.size() - 1) + 1)))
+      .flatMapMany(tuple2 ->
+        tuple2.getT1()
+          .skip(tuple2.getT2())
+          .concatWith(tuple2.getT1()
+            .take(tuple2.getT2()))
+      );
+      */
+
     int totalCards = cardFlux.count().block().intValue();
     int maxChunk = 5;
     int numCardsLeft = totalCards;
