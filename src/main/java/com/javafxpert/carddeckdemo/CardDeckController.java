@@ -2,6 +2,7 @@ package com.javafxpert.carddeckdemo;
 
 import com.javafxpert.carddeckdemo.model.Card;
 import com.javafxpert.carddeckdemo.services.CardDeckService;
+import com.javafxpert.carddeckdemo.util.ShuffleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -58,7 +59,7 @@ public class CardDeckController {
                .filter(c -> c.length() >= 29)
                .flatMapMany(cardDeckService::createFluxFromCardsString)
                .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
-               .transform(cardDeckService::cutCards);
+               .transform(ShuffleUtils::cutCards);
   }
 
   @GetMapping("/overhandshuffle")
@@ -69,19 +70,18 @@ public class CardDeckController {
 	             .filter(c -> c.length() >= 29)
 	             .flatMapMany(cardDeckService::createFluxFromCardsString)
 	             .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
-	             .transform(cardDeckService::overhandShuffle);
+	             .transform(ShuffleUtils::overhandShuffle);
   }
 
   @GetMapping("/riffleshuffle")
   public Flux<Card> getCardDeckRiffleShuffle(@RequestParam (defaultValue = "") String cards) {
-    System.out.println("cards: " + cards);
     return Mono.just(cards)
                .log()
                .map(c -> cards.replaceAll(" ", ""))
                .filter(c -> c.length() >= 29)
                .flatMapMany(cardDeckService::createFluxFromCardsString)
                .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
-               .transform(cardDeckService::riffleShuffle);
+               .transform(ShuffleUtils::riffleShuffle);
   }
 
   @GetMapping("/dealpokerhand")
@@ -92,7 +92,7 @@ public class CardDeckController {
                .filter(c -> c.length() >= 29)
                .flatMapMany(cardDeckService::createFluxFromCardsString)
                .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
-               .transform(cardDeckService::dealPokerHand);
+               .transform(ShuffleUtils::dealPokerHand);
   }
 
   @GetMapping("/shuffledeal")
@@ -103,8 +103,8 @@ public class CardDeckController {
                .filter(c -> c.length() >= 29)
                .flatMapMany(cardDeckService::createFluxFromCardsString)
                .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
-               .transform(cardDeckService::shuffleWell)
-               .transform(cardDeckService::dealPokerHand);
+               .transform(ShuffleUtils::shuffleWell)
+               .transform(ShuffleUtils::dealPokerHand);
   }
 
 

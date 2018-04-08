@@ -14,7 +14,6 @@ import java.util.Comparator;
 public class CardDeckService {
   private final CardDeckDemoProperties cardDeckDemoProperties;
   private String imagesUri = "";
-  private final Comparator<Card> comparator = (c1, c2) -> c1.getWorth() - c2.getWorth();
 
   public CardDeckService(CardDeckDemoProperties cardDeckDemoProperties) {
     this.cardDeckDemoProperties = cardDeckDemoProperties;
@@ -80,73 +79,12 @@ public class CardDeckService {
         new Card("KD", imagesUri));
   }
 
-  public Flux<Card> cutCards(Flux<Card> cardFlux) {
-    return cardFlux.collectList()
-                   .map(list -> Tuples.of(Flux.fromIterable(list), (int)(Math.random() * (list.size() - 1) + 1)))
-                   .flatMapMany(tuple2 ->
-                       tuple2.getT1()
-                             .skip(tuple2.getT2())
-                             .concatWith(tuple2.getT1()
-                                               .take(tuple2.getT2()))
-                   );
-  }
-
-  /**
-   * Will not work :(
-   * @param cardFlux
-   * @return
-   */
-  public Flux<Card> overhandShuffle(Flux<Card> cardFlux) {
-    int totalCards = cardFlux.count().block().intValue();
-    int maxChunk = 5;
-    int numCardsLeft = totalCards;
-    Flux<Card> overhandShuffledCardFlux = Flux.empty();
-
-    while (numCardsLeft > 0) {
-      Flux<Card> tempCardFlux = cardFlux.take(numCardsLeft);
-      int numCardsToTransfer = Math.min((int)(Math.random() * maxChunk + 1), numCardsLeft);
-      overhandShuffledCardFlux = Flux.concat(overhandShuffledCardFlux, tempCardFlux.takeLast(numCardsToTransfer));
-
-      numCardsLeft -= numCardsToTransfer;
-    }
-    return overhandShuffledCardFlux;
-  }
-
-  public Flux<Card> riffleShuffle(Flux<Card> cardFlux) {
-    int totalCards = cardFlux.count().block().intValue();
-    Flux<Card> cutCardsA = cardFlux.take(totalCards / 2);
-    Flux<Card> cutCardsB = cardFlux.takeLast(totalCards / 2);
-    Flux<Tuple2<Card, Card>> tuples = Flux.zip(cutCardsA, cutCardsB);
-
-    return tuples.flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()));
-  }
-
-  public Flux<Card> dealPokerHand(Flux<Card> cardFlux) {
-    return cardFlux
-            .index()
-            .take(9)
-            .filter(t -> t.getT1() % 2 == 0)
-            .map(Tuple2::getT2)
-            .sort(comparator);
-  }
-
-  public Flux<Card> shuffleWell(Flux<Card> cardFlux) {
-    int totalCards = cardFlux.count().block().intValue();
-
-    return cardFlux.transform(this::overhandShuffle)
-        .transform(this::riffleShuffle)
-        .transform(this::overhandShuffle)
-        .transform(this::riffleShuffle)
-        .transform(this::overhandShuffle)
-        .transform(this::riffleShuffle)
-        .transform(this::cutCards);
-  }
-
   public Flux<Card> createFluxFromCardsString(String cardStr) {
     String[] cardStrArray = cardStr.split(",");
     Flux<Card> cardFlux = Flux.fromArray(cardStrArray)
         .map(code -> new Card(code, imagesUri));
     return cardFlux;
   }
+
 
 }
