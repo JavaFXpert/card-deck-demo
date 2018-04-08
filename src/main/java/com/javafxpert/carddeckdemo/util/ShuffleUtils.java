@@ -35,6 +35,23 @@ public class ShuffleUtils {
           .concatWith(tuple2.getT1()
             .take(tuple2.getT2()))
       );
+
+    /*
+    int totalCards = cardFlux.count().block().intValue();
+    int maxChunk = 5;
+    int numCardsLeft = totalCards;
+    Flux<Card> overhandShuffledCardFlux = Flux.empty();
+
+    while (numCardsLeft > 0) {
+      Flux<Card> tempCardFlux = cardFlux.take(numCardsLeft);
+      int numCardsToTransfer = Math.min((int)(Math.random() * maxChunk + 1), numCardsLeft);
+      overhandShuffledCardFlux = Flux.concat(overhandShuffledCardFlux, tempCardFlux.takeLast(numCardsToTransfer));
+
+      numCardsLeft -= numCardsToTransfer;
+    }
+    return overhandShuffledCardFlux;
+    */
+
   }
 
   public static Flux<Card> riffleShuffle(Flux<Card> cardFlux) {
