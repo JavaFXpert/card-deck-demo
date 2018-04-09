@@ -17,6 +17,7 @@ public class Card implements Comparable {
   private String suit;
   private String image;
   private int worth;
+  private int seq;
 
   public Card(String code, String imagesUri) {
     this.code = code;
@@ -24,74 +25,74 @@ public class Card implements Comparable {
     switch (valueCode) {
       case "A":
         value = "ACE";
-        worth += 1;
+        worth = 0;
         break;
       case "2":
         value = "2";
-        worth += 2;
+        worth = 1;
         break;
       case "3":
         value = "3";
-        worth += 3;
+        worth = 2;
         break;
       case "4":
         value = "4";
-        worth += 4;
+        worth = 3;
         break;
       case "5":
         value = "5";
-        worth += 5;
+        worth = 4;
         break;
       case "6":
         value = "6";
-        worth += 6;
+        worth = 5;
         break;
       case "7":
         value = "7";
-        worth += 7;
+        worth = 6;
         break;
       case "8":
         value = "8";
-        worth += 8;
+        worth = 7;
         break;
       case "9":
         value = "9";
-        worth += 9;
+        worth = 8;
         break;
       case "0":
         value = "10";
-        worth += 10;
+        worth = 9;
         break;
       case "J":
         value = "JACK";
-        worth += 11;
+        worth = 10;
         break;
       case "Q":
         value = "QUEEN";
-        worth += 12;
+        worth = 11;
         break;
       case "K":
         value = "KING";
-        worth += 13;
+        worth = 12;
     }
 
     String suitCode = code.substring(1,2);
     switch (suitCode) {
-      case "S":
-        suit = "SPADES";
-        //worth += 8;
-        break;
-      case "D":
-        suit = "DIAMONDS";
-        //worth += 12;
-        break;
       case "C":
         suit = "CLUBS";
-        //worth += 4;
+        seq = worth + (13 * ((12 - worth + 0) % 4));
         break;
       case "H":
         suit = "HEARTS";
-        //worth += 4;
+        seq = worth + (13 * ((12 - worth + 1) % 4));
+        break;
+      case "S":
+        suit = "SPADES";
+        seq = worth + (13 * ((12 - worth + 2) % 4));
+        break;
+      case "D":
+        suit = "DIAMONDS";
+        seq = worth + (13 * ((12 - worth + 3) % 4));
     }
 
     image = imagesUri + "/" + code + ".png";
@@ -115,6 +116,10 @@ public class Card implements Comparable {
 
   public int getWorth() {
     return worth;
+  }
+
+  public int getSeq() {
+    return seq;
   }
 
   @Override
