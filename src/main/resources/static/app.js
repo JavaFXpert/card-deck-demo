@@ -80,7 +80,7 @@ function dealCards(modeArg) {
           })
 
           dealerScore = "?";
-          dealerScoreNode.textContent = dealerScore;
+          dealerScoreNode.textContent = "Full House";
         })
         .catch(console.error)
 }
@@ -121,7 +121,6 @@ function resetPlayingArea() {
   roundTied = false;
   dealerScore = "";
   dealerScoreNode.textContent = dealerScore;
-  announcementNode.textContent = "";
   while (dealerCardsNode.firstChild) {
     dealerCardsNode.removeChild(dealerCardsNode.firstChild);
   }

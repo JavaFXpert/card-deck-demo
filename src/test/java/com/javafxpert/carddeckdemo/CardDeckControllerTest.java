@@ -1,5 +1,6 @@
 package com.javafxpert.carddeckdemo;
 
+import com.javafxpert.carddeckdemo.controllers.CardDeckController;
 import com.javafxpert.carddeckdemo.model.Card;
 import com.javafxpert.carddeckdemo.services.CardDeckService;
 import org.junit.jupiter.api.Test;

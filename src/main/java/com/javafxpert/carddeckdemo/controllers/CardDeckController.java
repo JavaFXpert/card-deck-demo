@@ -1,5 +1,6 @@
-package com.javafxpert.carddeckdemo;
+package com.javafxpert.carddeckdemo.controllers;
 
+import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
 import com.javafxpert.carddeckdemo.model.Card;
 import com.javafxpert.carddeckdemo.services.CardDeckService;
 import com.javafxpert.carddeckdemo.util.ShuffleUtils;

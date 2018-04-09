@@ -49,7 +49,7 @@ public class ShuffleUtils {
     return cardFlux
             .collectList()
             .flatMapMany(l -> Flux.zip(
-                Flux.fromStream(l.stream().skip(l.size() / 2)),
+              Flux.fromStream(l.stream().skip(0)),
 	            Flux.fromStream(l.stream().skip(l.size() / 2))
             ))
             .flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()));

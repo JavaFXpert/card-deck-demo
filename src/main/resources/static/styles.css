@@ -1,5 +1,4 @@
 body {
-  //height: 100vh;
   background: #000000 ;
 }
 
@@ -16,47 +15,35 @@ h2 {
   color: #051900;
 }
 
+#dealer-number {
+  font-family: fantasy;
+  font-size: 26px;
+  color: white;
+}
+
 .game-container {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  //perspective: 1000px;
 }
 
 #game-area{
   position: relative;
   z-index: 1;
   width: 100%;
-  //transform: rotateX(35deg);
-  //padding: 0 2rem 2rem 2rem;
-  //background: #38630e;
   background: #000000;
-  //border-radius: 10px;
-  //-webkit-box-shadow: 0px 0px 46px 1px rgba(196,222,0,1);
-  //-moz-box-shadow: 0px 0px 46px 1px rgba(196,222,0,1);
-  //box-shadow: 0px 0px 46px 1px rgba(196,222,0,1);
-  
-}
-
-#dealer-area {
-  //margin-bottom: 2rem;
 }
 
 #dealer-cards {
-  //transform: translateY(-40px);
   display: flex;
   justify-content: center;
-  height: 120px;
-}
+  height: 450px;
+  //width: 850px;
+  display:table;
+  margin: 0 auto;
 
-#player-area #announcement {
-  //margin-left: 25%;
-}
-
-#player-cards {
-  display: flex;
-  justify-content: center;
-  height: 120px;
+  //overflow-x: scroll;
+  //overflow-y: hidden;
 }
 
 #action-area {
@@ -112,8 +99,8 @@ button#stay {
 }
 
 img {
-  width: 56px;
-  height: 84px;
+  width: 65px;
+  height: 100px;
 }
 
 @media (min-width: 1200px) {
