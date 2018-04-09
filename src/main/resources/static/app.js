@@ -80,7 +80,7 @@ function dealCards(modeArg) {
           })
 
           dealerScore = "?";
-          dealerScoreNode.textContent = "Full House";
+          dealerScoreNode.textContent = "";
         })
         .catch(console.error)
 }
