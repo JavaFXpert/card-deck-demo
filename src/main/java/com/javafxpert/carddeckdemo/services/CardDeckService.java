@@ -9,6 +9,7 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 @Service
 public class CardDeckService {
@@ -86,5 +87,8 @@ public class CardDeckService {
     return cardFlux;
   }
 
-
+  public Mono<String> createStringFromCardFlux(Flux<Card> cardFlux) {
+    return cardFlux.map(card -> card.getCode())
+        .collect(Collectors.joining(","));
+  }
 }

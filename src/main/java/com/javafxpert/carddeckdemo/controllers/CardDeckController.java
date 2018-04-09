@@ -109,23 +109,15 @@ public class CardDeckController {
   }
 
 
-  /*
-  @GetMapping("/carddeckwebclient")
-  public Flux<Card> getCardDeck(boolean shuffled, int numcards) {
-    String cardDeckServiceUri = cardDeckDemoProperties.getCardimageshost() + ":" + cardDeckDemoProperties.getCardimagesport() + "/carddeck";
-    WebClient cardDeckWebClient = WebClient.create(cardDeckServiceUri);
-    Flux<Card> cardFlux = cardDeckWebClient.get()
-            .uri(builder -> builder.queryParam("shuffled", shuffled).queryParam("request", numcards).build())
-            .
-    return cardDeckService.getNewDeck(shuffled);
-
-
-    CardDeckSubscriber<Card> cardDeckSubscriber = new CardDeckSubscriber<>();
-    cardFlux.subscribe(cardDeckSubscriber);
-    System.out.println("Requesting 3 more");
-    cardDeckSubscriber.request(3);
-
+  public String retrievePokerHandName(Flux<Card> cardFlux) {
+    Mono<String> cardsMonoString = cardDeckService.createStringFromCardFlux(cardFlux);
+    String pokerScoreServiceUri = cardDeckDemoProperties.getCardimageshost() + ":" + cardDeckDemoProperties.getCardimagesport();
+    WebClient pokerScoreWebClient = WebClient.create(pokerScoreServiceUri);
+    String pokerHandMono = pokerScoreWebClient.get()
+            .uri("/cards/poker/identifyhand?cards=" + cardsMonoString.block()) //TODO: Find alternative to block()?
+        .retrieve()
+        .bodyToMono(String.class)
+        .block(); //TODO: Find alternative to block()?
+    return pokerHandMono;
   }
-  */
-
 }
