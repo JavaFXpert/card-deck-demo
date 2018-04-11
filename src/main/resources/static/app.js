@@ -22,6 +22,7 @@ let hitMeNode = document.getElementById("hit-me");
 let stayNode = document.getElementById("stay");
 let dealPokerHandNode = document.getElementById("deal-poker-hand");
 let shuffleDealNode = document.getElementById("shuffle-deal");
+let onlyHeartsNode = document.getElementById("only-hearts");
 
 
 // On click events
@@ -31,6 +32,7 @@ hitMeNode.onclick = () => dealCards('overhandShuffle');
 stayNode.onclick = () => dealCards('riffleShuffle');
 dealPokerHandNode.onclick = () => dealCards('dealPokerHand');
 shuffleDealNode.onclick = () => dealCards('shuffleDeal');
+onlyHeartsNode.onclick = () => dealCards('onlyHearts');
 
 function dealCards(modeArg) {
     var fetchStr = "http://localhost:8080/cards/deck/new?numcards=52";
@@ -51,6 +53,9 @@ function dealCards(modeArg) {
     }
     else if (modeArg === "shuffleDeal") {
         fetchStr = "http://localhost:8080/cards/deck/shuffledeal?cards=" + cardStr;
+    }
+    else if (modeArg === "onlyHearts") {
+        fetchStr = "http://localhost:8080/cards/deck/hearts";
     }
     resetPlayingArea();
     nextHandNode.style.display = "block";

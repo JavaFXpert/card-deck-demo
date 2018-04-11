@@ -29,65 +29,77 @@ public class CardDeckController {
   }
 
   @GetMapping("/new")
-  public Flux<Card> getCardDeck(@RequestParam(defaultValue = "52") int numcards) {
+  public Mono<CardHand> getCardDeck(@RequestParam(defaultValue = "52") int numcards) {
     return cardDeckService.getNewDeck()
-                          .take(numcards);
+        .take(numcards)
+        .collectList()
+        .map(l -> new CardHand(l, "New Deck"));
   }
 
   @GetMapping("/{suit}")
-  public Flux<Card> getCardDeckBySuit(
+  public Mono<CardHand>  getCardDeckBySuit(
           @PathVariable String suit,
-          @RequestParam(defaultValue = "false") boolean shuffled,
-          @RequestParam(defaultValue = "10") int numcards
+          @RequestParam(defaultValue = "13") int numcards
   ) {
-
     return cardDeckService.getNewDeck()
-                          .filter(card -> card.getSuit().equalsIgnoreCase(suit))
-                          .take(numcards);
+        .filter(card -> card.getSuit().equalsIgnoreCase(suit))
+        .take(numcards)
+        .collectList()
+        .map(l -> new CardHand(l, "Only " + suit));
   }
 
   @GetMapping("/cut")
-  public Flux<Card> getCardDeckCut(@RequestParam (defaultValue = "") String cards) {
+  public Mono<CardHand> getCardDeckCut(@RequestParam (defaultValue = "") String cards) {
     return Mono.just(cards)
-               .log()
-               .map(c -> cards.replaceAll(" ", ""))
-               .filter(c -> c.length() >= 29)
-               .flatMapMany(cardDeckService::createFluxFromCardsString)
-               .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
-               .transform(ShuffleUtils::cutCards);
+        .log()
+        .map(c -> cards.replaceAll(" ", ""))
+        .filter(c -> c.length() >= 29)
+        .flatMapMany(cardDeckService::createFluxFromCardsString)
+        .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
+        .transform(ShuffleUtils::cutCards)
+        .collectList()
+        .map(l -> new CardHand(l, "Cut"));
   }
 
   @GetMapping("/overhandshuffle")
-  public Flux<Card> getCardDeckOverhandShuffle(@RequestParam (defaultValue = "") String cards) {
+  public Mono<CardHand> getCardDeckOverhandShuffle(@RequestParam (defaultValue = "") String cards) {
 	  return Mono.just(cards)
-	             .log()
-	             .map(c -> cards.replaceAll(" ", ""))
-	             .filter(c -> c.length() >= 29)
-	             .flatMapMany(cardDeckService::createFluxFromCardsString)
-	             .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
-	             .transform(ShuffleUtils::overhandShuffle);
+        .log()
+        .map(c -> cards.replaceAll(" ", ""))
+        .filter(c -> c.length() >= 29)
+        .flatMapMany(cardDeckService::createFluxFromCardsString)
+        .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
+        .transform(ShuffleUtils::overhandShuffle)
+        .collectList()
+        .map(l -> new CardHand(l, "Overhand shuffle"));
   }
 
   @GetMapping("/riffleshuffle")
-  public Flux<Card> getCardDeckRiffleShuffle(@RequestParam (defaultValue = "") String cards) {
+  public Mono<CardHand> getCardDeckRiffleShuffle(@RequestParam (defaultValue = "") String cards) {
     return Mono.just(cards)
-               .log()
-               .map(c -> cards.replaceAll(" ", ""))
-               .filter(c -> c.length() >= 29)
-               .flatMapMany(cardDeckService::createFluxFromCardsString)
-               .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
-               .transform(ShuffleUtils::riffleShuffle);
+        .log()
+        .map(c -> cards.replaceAll(" ", ""))
+        .filter(c -> c.length() >= 29)
+        .flatMapMany(cardDeckService::createFluxFromCardsString)
+        .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
+        .transform(ShuffleUtils::riffleShuffle)
+        .collectList()
+        .map(l -> new CardHand(l, "Riffle shuffle"));
   }
 
   @GetMapping("/dealpokerhand")
-  public Flux<Card> getCardDeckDealPokerHand(@RequestParam (defaultValue = "") String cards) {
+  public Mono<CardHand> getCardDeckDealPokerHand(@RequestParam (defaultValue = "") String cards) {
     return Mono.just(cards)
                .log()
                .map(c -> cards.replaceAll(" ", ""))
                .filter(c -> c.length() >= 29)
                .flatMapMany(cardDeckService::createFluxFromCardsString)
                .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
-               .transform(ShuffleUtils::dealPokerHand);
+               .transform(ShuffleUtils::dealPokerHand)
+               .collectList()
+               .flatMap(l -> retrievePokerHandName(Flux.fromIterable(l))
+                   .map(handName -> new CardHand(l, handName)));
+
   }
 
   @GetMapping("/shuffledeal")
@@ -103,9 +115,6 @@ public class CardDeckController {
                .collectList()
                .flatMap(l -> retrievePokerHandName(Flux.fromIterable(l))
                                 .map(handName -> new CardHand(l, handName)));
-
-    /*
-cardsMonoString.flatMap(card -> webClient... .uri("/cards/poker/identifyhand?cards=" + card)....)     */
   }
 
 
