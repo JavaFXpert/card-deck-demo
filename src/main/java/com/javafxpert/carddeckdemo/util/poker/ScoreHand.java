@@ -138,7 +138,7 @@ public class ScoreHand {
             }
         } else {
             for (int i = 1; i < 5; i++) {
-                if (sorted[i] - sorted[i - 1] > 1) return false;
+                if (sorted[i] - sorted[i - 1] != 1) return false;
             }
             return true;
         }

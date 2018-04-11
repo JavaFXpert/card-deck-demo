@@ -60,10 +60,10 @@ function dealCards(modeArg) {
     shuffleDealNode.style.display = "block";
 
     fetch(fetchStr)
-        .then(cards => cards.json())
-        .then(cards => {
+        .then(res => res.json())
+        .then(res => {
           cardStr = "";
-          cards.forEach((c, i) => {
+          res.cards.forEach((c, i) => {
               dealerCards.push(c);
               let cardDomElement = document.createElement("img");
               if(i===-1) {
@@ -73,14 +73,14 @@ function dealCards(modeArg) {
                   cardDomElement.src = c.image;
               }
               cardStr += c.code;
-              if (i < cards.length - 1) {
+              if (i < res.cards.length - 1) {
                   cardStr += ",";
               }
               dealerCardsNode.appendChild(cardDomElement)
+              dealerScoreNode.textContent = res.name;
           })
 
           dealerScore = "?";
-          dealerScoreNode.textContent = "";
         })
         .catch(console.error)
 }

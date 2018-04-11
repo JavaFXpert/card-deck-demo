@@ -10,12 +10,14 @@ h1 {
 }
 
 h2 {
+  text-align: center;
+  color: white;
   font-family: fantasy;
   font-size: 26px;
-  color: #051900;
 }
 
 #dealer-number {
+  text-align: center;
   font-family: fantasy;
   font-size: 26px;
   color: white;
