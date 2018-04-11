@@ -105,10 +105,7 @@ public class CardDeckController {
                                 .map(handName -> new CardHand(l, handName)));
 
     /*
-    Project Reactor allows to collectFluxelements not only to List, but also to
-    Map<K, T>withFlux.collectMap(); or to multimapMap<K, Collection<T>>withFlux.collectMultimap();
-    or to any data structure with customjava.util.stream.Collector:Flux.collect(Collector).
-     */
+cardsMonoString.flatMap(card -> webClient... .uri("/cards/poker/identifyhand?cards=" + card)....)     */
   }
 
 
@@ -116,9 +113,10 @@ public class CardDeckController {
     Mono<String> cardsMonoString = cardDeckService.createStringFromCardFlux(cardFlux);
     String pokerScoreServiceUri = cardDeckDemoProperties.getCardimageshost() + ":" + cardDeckDemoProperties.getCardimagesport();
     WebClient pokerScoreWebClient = WebClient.create(pokerScoreServiceUri);
-    return pokerScoreWebClient.get()
-            .uri("/cards/poker/identifyhand?cards=" + cardsMonoString.block()) //TODO: Find alternative to block()?
-        .retrieve()
-        .bodyToMono(String.class); //TODO: Find alternative to block()?
+    return cardsMonoString.flatMap(cards ->
+        pokerScoreWebClient.get()
+            .uri("/cards/poker/identifyhand?cards=" + cards)
+            .retrieve()
+            .bodyToMono(String.class));
   }
 }
