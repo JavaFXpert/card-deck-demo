@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ShuffleUtils {
-  private static final Comparator<Card> comparator = (c1, c2) -> c1.getWorth() - c2.getWorth();
+  private static final Comparator<Card> comparator = Comparator.comparingInt(Card::getWorth);
 
   public static Flux<Card> cutCards(Flux<Card> cardFlux) {
     return cardFlux.collectList()
@@ -65,8 +65,6 @@ public class ShuffleUtils {
   }
 
   public static Flux<Card> shuffleWell(Flux<Card> cardFlux) {
-    int totalCards = cardFlux.count().block().intValue();
-
     return cardFlux.transform(ShuffleUtils::overhandShuffle)
       .transform(ShuffleUtils::riffleShuffle)
       .transform(ShuffleUtils::overhandShuffle)

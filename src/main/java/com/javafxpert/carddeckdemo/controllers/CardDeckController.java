@@ -2,11 +2,10 @@ package com.javafxpert.carddeckdemo.controllers;
 
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
 import com.javafxpert.carddeckdemo.model.Card;
+import com.javafxpert.carddeckdemo.model.CardHand;
 import com.javafxpert.carddeckdemo.services.CardDeckService;
 import com.javafxpert.carddeckdemo.util.ShuffleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
-
-import java.time.Duration;
-import java.util.Comparator;
-import java.util.List;
 
 @RestController
 @RequestMapping("/cards/deck")
@@ -97,7 +91,7 @@ public class CardDeckController {
   }
 
   @GetMapping("/shuffledeal")
-  public Flux<Card> getCardDeckShuffleDeal(@RequestParam (defaultValue = "") String cards) {
+  public Mono<CardHand> getCardDeckShuffleDeal(@RequestParam (defaultValue = "") String cards) {
     return Mono.just(cards)
                .log()
                .map(c -> cards.replaceAll(" ", ""))
@@ -105,7 +99,10 @@ public class CardDeckController {
                .flatMapMany(cardDeckService::createFluxFromCardsString)
                .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
                .transform(ShuffleUtils::shuffleWell)
-               .transform(ShuffleUtils::dealPokerHand);
+               .transform(ShuffleUtils::dealPokerHand)
+               .collectList()
+               .flatMap(l -> retrievePokerHandName(Flux.fromIterable(l))
+                                .map(handName -> new CardHand(l, handName)));
 
     /*
     Project Reactor allows to collectFluxelements not only to List, but also to

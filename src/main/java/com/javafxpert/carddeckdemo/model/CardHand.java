@@ -1,25 +1,26 @@
 package com.javafxpert.carddeckdemo.model;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class CardHand {
-  private Flux<Card> cards;
-  private Mono<String> name;
 
-  public Flux<Card> getCards() {
-    return cards;
-  }
+	private final List<Card> cards;
+	private final String     name;
 
-  public void setCards(Flux<Card> cards) {
-    this.cards = cards;
-  }
+	@JsonCreator
+	public CardHand(List<Card> cards, String name) {
+		this.cards = new ArrayList<>(cards);
+		this.name = name;
+	}
 
-  public Mono<String> getName() {
-    return name;
-  }
+	public List<Card> getCards() {
+		return cards;
+	}
 
-  public void setName(Mono<String> name) {
-    this.name = name;
-  }
+	public String getName() {
+		return name;
+	}
 }
