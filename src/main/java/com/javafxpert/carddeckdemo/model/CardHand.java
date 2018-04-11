@@ -1,10 +1,11 @@
 package com.javafxpert.carddeckdemo.model;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class CardHand {
   private Flux<Card> cards;
-  private String name;
+  private Mono<String> name;
 
   public Flux<Card> getCards() {
     return cards;
@@ -14,11 +15,11 @@ public class CardHand {
     this.cards = cards;
   }
 
-  public String getName() {
+  public Mono<String> getName() {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(Mono<String> name) {
     this.name = name;
   }
 }
