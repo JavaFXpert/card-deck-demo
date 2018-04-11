@@ -47,12 +47,13 @@ public class ShuffleUtils {
 
   public static Flux<Card> riffleShuffle(Flux<Card> cardFlux) {
     return cardFlux
-            .collectList()
-            .flatMapMany(l -> Flux.zip(
-              Flux.fromStream(l.stream().skip(0)),
-	            Flux.fromStream(l.stream().skip(l.size() / 2))
-            ))
-            .flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()));
+      .collectList()
+      .flatMapMany(l -> Flux.zip(
+        Flux.fromStream(l.stream().limit((long)(Math.ceil(l.size() / 2.0)))),
+        Flux.fromStream(l.stream().skip((long)(Math.floor(l.size() / 2.0)))
+      ))
+      .flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2())))
+      .distinct();
   }
 
   public static Flux<Card> dealPokerHand(Flux<Card> cardFlux) {
