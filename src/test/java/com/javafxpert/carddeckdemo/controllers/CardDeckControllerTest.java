@@ -45,6 +45,9 @@ class CardDeckControllerTest {
       new Card("5C", "")
     );
 
-    assertEquals("Straight Flush", cardDeckController.retrievePokerHandName(cardFlux));
+    StepVerifier.create(cardDeckController.retrievePokerHandName(cardFlux))
+      .expectNext("Straight Flush")
+      .verifyComplete();
+    //assertEquals("Straight Flush", cardDeckController.retrievePokerHandName(cardFlux));
   }
 }

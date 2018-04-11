@@ -106,18 +106,22 @@ public class CardDeckController {
                .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
                .transform(ShuffleUtils::shuffleWell)
                .transform(ShuffleUtils::dealPokerHand);
+
+    /*
+    Project Reactor allows to collectFluxelements not only to List, but also to
+    Map<K, T>withFlux.collectMap(); or to multimapMap<K, Collection<T>>withFlux.collectMultimap();
+    or to any data structure with customjava.util.stream.Collector:Flux.collect(Collector).
+     */
   }
 
 
-  public String retrievePokerHandName(Flux<Card> cardFlux) {
+  public Mono<String> retrievePokerHandName(Flux<Card> cardFlux) {
     Mono<String> cardsMonoString = cardDeckService.createStringFromCardFlux(cardFlux);
     String pokerScoreServiceUri = cardDeckDemoProperties.getCardimageshost() + ":" + cardDeckDemoProperties.getCardimagesport();
     WebClient pokerScoreWebClient = WebClient.create(pokerScoreServiceUri);
-    String pokerHandMono = pokerScoreWebClient.get()
+    return pokerScoreWebClient.get()
             .uri("/cards/poker/identifyhand?cards=" + cardsMonoString.block()) //TODO: Find alternative to block()?
         .retrieve()
-        .bodyToMono(String.class)
-        .block(); //TODO: Find alternative to block()?
-    return pokerHandMono;
+        .bodyToMono(String.class); //TODO: Find alternative to block()?
   }
 }
