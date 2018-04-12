@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 @RestController
 @RequestMapping("/cards/deck")
@@ -118,21 +121,21 @@ public class CardDeckController {
   }
 
   @GetMapping("/shuffledealrepeat")
-  public Mono<String> shuffleDealRepeatCollectStats(@RequestParam (defaultValue = "100") int numtimes) {
+  public Flux<Tuple2> shuffleDealRepeatCollectStats(@RequestParam (defaultValue = "100") int numtimes) {
 
-    /* TODO: Somehow do a shuffle and deal numtimes times and collect frequency of each hand occurring
-    Mono<String> resultMono =
-        return Flux.range(0, 10)
-            .flatMap(i -> cardDeckService.getNewDeck())
-            .transform(ShuffleUtils::shuffleWell)
-            .transform(ShuffleUtils::dealPokerHand)
-            .collectList()
-            .flatMap(l -> retrievePokerHandName(Flux.fromIterable(l))
-                .map(handName -> new CardHand(l, handName)))
-            .log();
-    */
-
-    return Mono.just("Done");
+    return Flux
+        .range(0, 10)
+        .flatMap(i ->
+            Flux.defer(cardDeckService::getNewDeck)
+                .subscribeOn(Schedulers.parallel())
+                .transform(ShuffleUtils::shuffleWell)
+                .transform(ShuffleUtils::dealPokerHand)
+                .collectList()
+                .flatMap(l -> retrievePokerHandName(Flux.fromIterable(l))
+                    .map(handName -> new CardHand(l, handName)))
+        )
+        .groupBy(CardHand::getName)
+        .flatMap(gf -> gf.count().map(c -> Tuples.of(gf.key(), c)));
   }
 
 
