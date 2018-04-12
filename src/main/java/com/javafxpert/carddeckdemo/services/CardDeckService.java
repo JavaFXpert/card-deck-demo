@@ -2,6 +2,7 @@ package com.javafxpert.carddeckdemo.services;
 
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
 import com.javafxpert.carddeckdemo.model.Card;
+import com.javafxpert.carddeckdemo.repository.CardDeckRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,10 +15,14 @@ import java.util.stream.Collectors;
 @Service
 public class CardDeckService {
   private final CardDeckDemoProperties cardDeckDemoProperties;
+  private final CardDeckRepository cardDeckRepository;
   private String imagesUri = "";
 
-  public CardDeckService(CardDeckDemoProperties cardDeckDemoProperties) {
+  public CardDeckService(CardDeckDemoProperties cardDeckDemoProperties,
+                         CardDeckRepository cardDeckRepository) {
     this.cardDeckDemoProperties = cardDeckDemoProperties;
+    this.cardDeckRepository = cardDeckRepository;
+
     imagesUri = cardDeckDemoProperties.getCardimageshost() + ":" + cardDeckDemoProperties.getCardimagesport() + "/images";
   }
 
@@ -78,6 +83,10 @@ public class CardDeckService {
         new Card("JD", imagesUri),
         new Card("QD", imagesUri),
         new Card("KD", imagesUri));
+  }
+
+  public Flux<Card> getNewDeckFromDb() {
+    return cardDeckRepository.findAll();
   }
 
   public Flux<Card> createFluxFromCardsString(String cardStr) {

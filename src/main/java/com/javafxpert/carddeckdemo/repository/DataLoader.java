@@ -1,13 +1,10 @@
-/*
 package com.javafxpert.carddeckdemo.repository;
 
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
 import com.javafxpert.carddeckdemo.model.Card;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
-
 import javax.annotation.PostConstruct;
-
 
 @Component
 public class DataLoader {
@@ -81,9 +78,7 @@ public class DataLoader {
         new Card("JH", imagesUri),
         new Card("QH", imagesUri),
         new Card("KH", imagesUri))
-      .flatMap(this.cardDeckRepository::save))
+      .flatMap(s -> this.cardDeckRepository.save(s)))
       .subscribe(System.out::println);
-
   }
 }
-*/

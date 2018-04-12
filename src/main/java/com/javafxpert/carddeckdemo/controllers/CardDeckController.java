@@ -30,7 +30,7 @@ public class CardDeckController {
 
   @GetMapping("/new")
   public Mono<CardHand> getCardDeck(@RequestParam(defaultValue = "52") int numcards) {
-    return cardDeckService.getNewDeck()
+    return cardDeckService.getNewDeckFromDb()
         .take(numcards)
         .collectList()
         .map(l -> new CardHand(l, "New Deck"));

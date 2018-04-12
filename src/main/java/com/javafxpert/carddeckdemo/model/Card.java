@@ -7,17 +7,21 @@ package com.javafxpert.carddeckdemo.model;
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Document
 public class Card implements Comparable {
+  //private String id;
   private String code;
   private String value;
   private String suit;
   private String image;
   private int worth;
   private int seq;
+  private String imagesUri;
 
   public Card(String code, String imagesUri) {
     this.code = code;
@@ -120,6 +124,10 @@ public class Card implements Comparable {
 
   public int getSeq() {
     return seq;
+  }
+
+  public String getImagesUri() {
+    return imagesUri;
   }
 
   @Override

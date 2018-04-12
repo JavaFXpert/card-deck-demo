@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.lang.Math.*;
+
 public class ShuffleUtils {
   private static final Comparator<Card> comparator = Comparator.comparingInt(Card::getWorth);
 
   public static Flux<Card> cutCards(Flux<Card> cardFlux) {
     return cardFlux.collectList()
-      .map(list -> Tuples.of(Flux.fromIterable(list), (int)(Math.random() * (list.size() - 1) + 1)))
+      .map(list -> Tuples.of(Flux.fromIterable(list), (int)(random() * (list.size() - 1) + 1)))
       .flatMapMany(tuple2 ->
         tuple2.getT1()
           .skip(tuple2.getT2())
@@ -33,7 +35,7 @@ public class ShuffleUtils {
 
 		                 while (numCardsLeft > 0) {
 			                 List<Card> tempCardFlux = l.subList(0, numCardsLeft);
-			                 int numCardsToTransfer = Math.min((int) (Math.random() * maxChunk + 1),
+			                 int numCardsToTransfer = min((int) (random() * maxChunk + 1),
 					                 numCardsLeft);
 			                 overhandShuffledCardFlux.addAll(
 				                 tempCardFlux.subList(tempCardFlux.size() - numCardsToTransfer, tempCardFlux.size())
@@ -45,12 +47,16 @@ public class ShuffleUtils {
 	                 });
   }
 
+  /**
+   *
+   * Note: The floor() and ceil() methods are used to accommodate and odd number of cards
+   */
   public static Flux<Card> riffleShuffle(Flux<Card> cardFlux) {
     return cardFlux
       .collectList()
       .flatMapMany(l -> Flux.zip(
-        Flux.fromStream(l.stream().limit((long)(Math.ceil(l.size() / 2.0)))),
-        Flux.fromStream(l.stream().skip((long)(Math.floor(l.size() / 2.0)))
+        Flux.fromStream(l.stream().limit((long)(ceil(l.size() / 2.0)))),
+        Flux.fromStream(l.stream().skip((long)(floor(l.size() / 2.0)))
       ))
       .flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2())))
       .distinct();
