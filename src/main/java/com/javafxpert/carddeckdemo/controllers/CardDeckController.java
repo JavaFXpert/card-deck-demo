@@ -117,6 +117,24 @@ public class CardDeckController {
                                 .map(handName -> new CardHand(l, handName)));
   }
 
+  @GetMapping("/shuffledealrepeat")
+  public Mono<String> shuffleDealRepeatCollectStats(@RequestParam (defaultValue = "100") int numtimes) {
+
+    /* TODO: Somehow do a shuffle and deal 
+    Mono<String> resultMono =
+        return Flux.range(0, 10)
+            .flatMap(i -> cardDeckService.getNewDeck())
+            .transform(ShuffleUtils::shuffleWell)
+            .transform(ShuffleUtils::dealPokerHand)
+            .collectList()
+            .flatMap(l -> retrievePokerHandName(Flux.fromIterable(l))
+                .map(handName -> new CardHand(l, handName)))
+            .log();
+    */
+
+    return Mono.just("Done");
+  }
+
 
   public Mono<String> retrievePokerHandName(Flux<Card> cardFlux) {
     Mono<String> cardsMonoString = cardDeckService.createStringFromCardFlux(cardFlux);
