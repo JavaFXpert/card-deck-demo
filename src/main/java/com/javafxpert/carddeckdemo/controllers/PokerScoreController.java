@@ -46,9 +46,8 @@ public class PokerScoreController {
 
   @Bean
   RouterFunction<ServerResponse> routes(CardDeckService cardDeckService) {
-    //String tempCards = "AS, 2S, 3S, 4S, 5C";
     return RouterFunctions.route(
-      RequestPredicates.GET("/idhand"), request -> ServerResponse
+      RequestPredicates.GET("/cards/poker/idhand"), request -> ServerResponse
         .ok()
         .body(Mono.just(request.uri().getQuery().substring(6))
             .log()

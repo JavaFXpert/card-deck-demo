@@ -163,7 +163,7 @@ public class CardDeckController {
     WebClient pokerScoreWebClient = WebClient.create(pokerScoreServiceUri);
     return cardsMonoString.flatMap(cards ->
         pokerScoreWebClient.get()
-            .uri("/cards/poker/identifyhand?cards=" + cards)
+            .uri("/cards/poker/idhand?cards=" + cards)
             .retrieve()
             .bodyToMono(String.class));
   }
