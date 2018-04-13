@@ -17,6 +17,7 @@ import reactor.core.publisher.GroupedFlux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple2;
+import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
 import java.util.Comparator;
@@ -36,7 +37,7 @@ public class CardDeckController {
 
   @GetMapping("/new")
   public Mono<CardHand> getCardDeck(@RequestParam(defaultValue = "52") int numcards) {
-    return cardDeckService.getNewDeckFromDb()
+    return cardDeckService.getNewDeck()
         .take(numcards)
         .collectList()
         .map(l -> new CardHand(l, "New Deck"));
@@ -93,6 +94,19 @@ public class CardDeckController {
         .map(l -> new CardHand(l, "Riffle shuffle"));
   }
 
+  @GetMapping("/randomshuffle")
+  public Mono<CardHand> getCardDeckRandomShuffle(@RequestParam (defaultValue = "") String cards) {
+    return Mono.just(cards)
+        .log()
+        .map(c -> cards.replaceAll(" ", ""))
+        .filter(c -> c.length() >= 29)
+        .flatMapMany(cardDeckService::createFluxFromCardsString)
+        .switchIfEmpty(Flux.defer(cardDeckService::getNewDeck))
+        .transform(ShuffleUtils::randomShuffle)
+        .collectList()
+        .map(l -> new CardHand(l, "Random shuffle"));
+  }
+
   @GetMapping("/dealpokerhand")
   public Mono<CardHand> getCardDeckDealPokerHand(@RequestParam (defaultValue = "") String cards) {
     return Mono.just(cards)
@@ -124,8 +138,8 @@ public class CardDeckController {
   }
 
   @GetMapping("/shuffledealrepeat")
-  public Flux<Tuple2<String, Long>> shuffleDealRepeatCollectStats(@RequestParam (defaultValue = "100") int numtimes) {
-    final Comparator<Tuple2<String, Long>> t2Comparator = Comparator.comparingLong(Tuple2::getT2);
+  public Flux<Tuple3<String, Long, Double>> shuffleDealRepeatCollectStats(@RequestParam (defaultValue = "1000") int numtimes) {
+    Comparator<Tuple3<String, Long, Double>> t3Comparator = Comparator.comparingLong(Tuple2::getT2);
     return Flux
         .range(0, numtimes)
         .flatMap(i ->
@@ -138,8 +152,8 @@ public class CardDeckController {
                     .map(handName -> new CardHand(l, handName)))
         )
         .groupBy(CardHand::getName)
-        .flatMap(gf -> gf.count().map(c -> Tuples.of(gf.key(), c)))
-        .sort(t2Comparator);
+        .flatMap(gf -> gf.count().map(c -> Tuples.of(gf.key(), c, Math.round(c  * 10000.0 / numtimes) / 100.0)))
+        .sort(t3Comparator);
   }
 
 

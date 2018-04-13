@@ -20,6 +20,7 @@ let newDeckNode = document.getElementById("new-game")
 let nextHandNode = document.getElementById("next-hand");
 let hitMeNode = document.getElementById("hit-me");
 let stayNode = document.getElementById("stay");
+let randomShuffleNode = document.getElementById("random-shuffle");
 let dealPokerHandNode = document.getElementById("deal-poker-hand");
 let shuffleDealNode = document.getElementById("shuffle-deal");
 let onlyHeartsNode = document.getElementById("only-hearts");
@@ -30,6 +31,7 @@ newDeckNode.onclick = () => dealCards('newDeck');
 nextHandNode.onclick = () => dealCards('cutCards');
 hitMeNode.onclick = () => dealCards('overhandShuffle');
 stayNode.onclick = () => dealCards('riffleShuffle');
+randomShuffleNode.onclick = () => dealCards('randomShuffle');
 dealPokerHandNode.onclick = () => dealCards('dealPokerHand');
 shuffleDealNode.onclick = () => dealCards('shuffleDeal');
 onlyHeartsNode.onclick = () => dealCards('onlyHearts');
@@ -48,6 +50,9 @@ function dealCards(modeArg) {
     else if (modeArg === "riffleShuffle") {
         fetchStr = "http://localhost:8080/cards/deck/riffleshuffle?cards=" + cardStr;
     }
+    else if (modeArg === "randomShuffle") {
+        fetchStr = "http://localhost:8080/cards/deck/randomshuffle?cards=" + cardStr;
+    }
     else if (modeArg === "dealPokerHand") {
         fetchStr = "http://localhost:8080/cards/deck/dealpokerhand?cards=" + cardStr;
     }
@@ -61,6 +66,7 @@ function dealCards(modeArg) {
     nextHandNode.style.display = "block";
     hitMeNode.style.display = "block";
     stayNode.style.display = "block";
+    randomShuffleNode.style.display = "block";
     dealPokerHandNode.style.display = "block";
     shuffleDealNode.style.display = "block";
 

@@ -55,7 +55,7 @@ public class ScoreHand {
             if (isFlush()) {
                 rank = isRoyal ? PokerHand.ROYAL_FLUSH : PokerHand.STRAIGHT_FLUSH;
             } else {
-                rank = isRoyal ? PokerHand.ROYAL_STRAIGHT : PokerHand.STRAIGHT;
+                rank = PokerHand.STRAIGHT;
             }
         } else {
             if (isFlush()) rank = PokerHand.FLUSH;

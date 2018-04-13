@@ -6,13 +6,14 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import static java.lang.Math.*;
 
 public class ShuffleUtils {
-  private static final Comparator<Card> comparator = Comparator.comparingInt(Card::getWorth);
+  private static final Comparator<Card> worthComparator = Comparator.comparingInt(Card::getWorth);
 
   public static Flux<Card> cutCards(Flux<Card> cardFlux) {
     return cardFlux.collectList()
@@ -68,7 +69,7 @@ public class ShuffleUtils {
       .take(9)
       .filter(t -> t.getT1() % 2 == 0)
       .map(Tuple2::getT2)
-      .sort(comparator);
+      .sort(worthComparator);
   }
 
   public static Flux<Card> shuffleWell(Flux<Card> cardFlux) {
@@ -78,7 +79,21 @@ public class ShuffleUtils {
       .transform(ShuffleUtils::riffleShuffle)
       .transform(ShuffleUtils::overhandShuffle)
       .transform(ShuffleUtils::riffleShuffle)
+      .transform(ShuffleUtils::overhandShuffle)
+      .transform(ShuffleUtils::riffleShuffle)
+      .transform(ShuffleUtils::overhandShuffle)
+      .transform(ShuffleUtils::overhandShuffle)
       .transform(ShuffleUtils::cutCards);
+  }
+
+  public static Flux<Card> randomShuffle(Flux<Card> cardFlux) {
+
+    return cardFlux.collectList()
+      .flatMapIterable(l -> {
+        List<Card> cardList = new ArrayList<>(l);
+        Collections.shuffle(cardList);
+        return cardList;
+      });
   }
 
 }

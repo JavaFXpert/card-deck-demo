@@ -7,6 +7,7 @@ package com.javafxpert.carddeckdemo.model;
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,8 @@ import java.util.Objects;
 
 @Document
 public class Card implements Comparable {
-  //private String id;
+  @Id
+  private String id;
   private String code;
   private String value;
   private String suit;
@@ -102,6 +104,14 @@ public class Card implements Comparable {
     image = imagesUri + "/" + code + ".png";
   }
 
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
   public String getCode() {
     return code;
   }
@@ -131,35 +141,42 @@ public class Card implements Comparable {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Card card = (Card) o;
-    return Objects.equals(code, card.code) &&
-            Objects.equals(value, card.value) &&
-            Objects.equals(suit, card.suit) &&
-            Objects.equals(image, card.image);
-  }
-
-  @Override
-  public int hashCode() {
-
-    return Objects.hash(code, value, suit, image);
-  }
-
-  @Override
   public int compareTo(Object o) {
     return ((Card)o).getWorth();
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Card card = (Card) o;
+    return worth == card.worth &&
+        seq == card.seq &&
+        Objects.equals(id, card.id) &&
+        Objects.equals(code, card.code) &&
+        Objects.equals(value, card.value) &&
+        Objects.equals(suit, card.suit) &&
+        Objects.equals(image, card.image) &&
+        Objects.equals(imagesUri, card.imagesUri);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(id, code, value, suit, image, worth, seq, imagesUri);
+  }
+
+  @Override
   public String toString() {
     return "Card{" +
-            "code='" + code + '\'' +
-            ", value='" + value + '\'' +
-            ", suit='" + suit + '\'' +
-            ", image='" + image + '\'' +
-            ", worth=" + worth +
-            '}';
+        "id='" + id + '\'' +
+        ", code='" + code + '\'' +
+        ", value='" + value + '\'' +
+        ", suit='" + suit + '\'' +
+        ", image='" + image + '\'' +
+        ", worth=" + worth +
+        ", seq=" + seq +
+        ", imagesUri='" + imagesUri + '\'' +
+        '}';
   }
 }
