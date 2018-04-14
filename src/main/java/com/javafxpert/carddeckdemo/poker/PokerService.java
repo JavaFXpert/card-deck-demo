@@ -2,7 +2,10 @@ package com.javafxpert.carddeckdemo.poker;
 
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 @Service
 public class PokerService {
@@ -14,12 +17,13 @@ public class PokerService {
     this.handFrequencyRepository = handFrequencyRepository;
   }
 
-  public void updateHandFrequency(Mono<String> handNameMono) {
-    handFrequencyRepository
-      .findById(handNameMono);
-    //TODO Finish implementing method
-
-    //Increment frequency property of handFrequency
-    // Save updated handFrequency
+  public Mono<Void> updateHandFrequency(Mono<String> handNameMono) {
+    return handFrequencyRepository
+      .findById(handNameMono)
+      .map(hf -> new HandFrequency(hf.getHandName(), hf.getFrequency() + 1))
+      .flatMap(handFrequencyRepository::save)
+      .timeout(Duration.ofMillis(500))
+      .retryWhen(t -> t.zipWith(Flux.range(0, 5)).delayElements(Duration.ofMillis(200)))
+      .then();
   }
 }
