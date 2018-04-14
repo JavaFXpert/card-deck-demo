@@ -8,13 +8,13 @@ import reactor.core.publisher.Flux;
 import javax.annotation.PostConstruct;
 
 @Component
-public class DataLoader {
+public class DataLoaderCardDeck {
   private final CardDeckRepository cardDeckRepository;
   private final CardDeckDemoProperties cardDeckDemoProperties;
   private String imagesUri = "";
 
-  public DataLoader(CardDeckRepository cardDeckRepository,
-                    CardDeckDemoProperties cardDeckDemoProperties) {
+  public DataLoaderCardDeck(CardDeckRepository cardDeckRepository,
+                            CardDeckDemoProperties cardDeckDemoProperties) {
     this.cardDeckRepository = cardDeckRepository;
     this.cardDeckDemoProperties = cardDeckDemoProperties;
     imagesUri = cardDeckDemoProperties.getCardimageshost() + ":" + cardDeckDemoProperties.getCardimagesport() + "/images";

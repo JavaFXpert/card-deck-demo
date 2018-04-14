@@ -196,7 +196,7 @@ class ScoreHandTest {
         new Card("KS", "").getSeq(),
         new Card("AD", "").getSeq())
     );
-    assertEquals(PokerHand.ROYAL_STRAIGHT, new ScoreHand(cardSeqList).getRank());
+    assertEquals(PokerHand.STRAIGHT, new ScoreHand(cardSeqList).getRank());
   }
 
   @Test
@@ -222,7 +222,7 @@ class ScoreHandTest {
         new Card("KC", "").getSeq(),
         new Card("AC", "").getSeq())
     );
-    assertEquals(PokerHand.ROYAL_STRAIGHT, new ScoreHand(cardSeqList).getRank());
+    assertEquals(PokerHand.STRAIGHT, new ScoreHand(cardSeqList).getRank());
   }
 
   @Test

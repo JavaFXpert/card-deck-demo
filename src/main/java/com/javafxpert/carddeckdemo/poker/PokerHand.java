@@ -10,7 +10,6 @@ public enum PokerHand {
     TWO_PAIR("Two Pairs"),
     THREE_OF_A_KIND("Three of a Kind"),
     STRAIGHT("Straight"),
-    ROYAL_STRAIGHT("Royal Straight"),
     FLUSH("Flush"),
     FULL_HOUSE("Full House"),
     FOUR_OF_A_KIND("Four of a Kind"),

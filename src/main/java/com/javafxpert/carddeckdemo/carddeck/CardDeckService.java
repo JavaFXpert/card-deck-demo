@@ -1,8 +1,7 @@
 package com.javafxpert.carddeckdemo.carddeck;
 
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
-import com.javafxpert.carddeckdemo.carddeck.Card;
-import com.javafxpert.carddeckdemo.carddeck.CardDeckRepository;
+import com.javafxpert.carddeckdemo.poker.HandFrequency;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,6 +27,10 @@ public class CardDeckService {
 
   public Flux<Card> getNewDeck() {
     return cardDeckRepository.findAll().sort(seqComparator);
+  }
+
+  public void updateHandFrequency(HandFrequency handFrequency) {
+    //HandFrequency handFrequency =
   }
 
   public Flux<Card> createFluxFromCardsString(String cardStr) {
