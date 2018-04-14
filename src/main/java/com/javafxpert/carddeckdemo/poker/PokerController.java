@@ -16,12 +16,14 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/cards/poker")
-public class PokerScoreController {
+public class PokerController {
   private final CardDeckService cardDeckService;
+  private final PokerService pokerService;
   private final CardDeckDemoProperties cardDeckDemoProperties;
 
-  public PokerScoreController(CardDeckService cardDeckService, CardDeckDemoProperties cardDeckDemoProperties) {
+  public PokerController(CardDeckService cardDeckService, PokerService pokerService, CardDeckDemoProperties cardDeckDemoProperties) {
     this.cardDeckService = cardDeckService;
+    this.pokerService = pokerService;
     this.cardDeckDemoProperties = cardDeckDemoProperties;
   }
 
@@ -58,7 +60,9 @@ public class PokerScoreController {
             .flatMap(list -> {
               ScoreHand scoreHand = new ScoreHand(list);
               String handName = scoreHand.getRank().getName();
-              return Mono.just(handName);
+              Mono<String> handNameMono = Mono.just(handName);
+              pokerService.updateHandFrequency(handNameMono);
+              return handNameMono;
             }), String.class));
 
 

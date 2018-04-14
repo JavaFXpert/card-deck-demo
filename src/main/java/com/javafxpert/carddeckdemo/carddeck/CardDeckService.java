@@ -29,10 +29,6 @@ public class CardDeckService {
     return cardDeckRepository.findAll().sort(seqComparator);
   }
 
-  public void updateHandFrequency(HandFrequency handFrequency) {
-    //HandFrequency handFrequency =
-  }
-
   public Flux<Card> createFluxFromCardsString(String cardStr) {
     String[] cardStrArray = cardStr.split(",");
     Flux<Card> cardFlux = Flux.fromArray(cardStrArray)
