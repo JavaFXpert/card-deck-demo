@@ -1,5 +1,7 @@
 package com.javafxpert.carddeckdemo.model;
 
+import com.javafxpert.carddeckdemo.carddeck.Card;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CardTest {

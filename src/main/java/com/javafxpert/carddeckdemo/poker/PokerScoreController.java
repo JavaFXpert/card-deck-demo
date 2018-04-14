@@ -1,8 +1,8 @@
-package com.javafxpert.carddeckdemo.controllers;
+package com.javafxpert.carddeckdemo.poker;
 
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
-import com.javafxpert.carddeckdemo.services.CardDeckService;
-import com.javafxpert.carddeckdemo.util.poker.ScoreHand;
+import com.javafxpert.carddeckdemo.carddeck.CardDeckService;
+import com.javafxpert.carddeckdemo.poker.ScoreHand;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController

@@ -1,6 +1,5 @@
-package com.javafxpert.carddeckdemo.util;
+package com.javafxpert.carddeckdemo.carddeck;
 
-import com.javafxpert.carddeckdemo.model.Card;
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;

@@ -2,14 +2,10 @@
  Card images from http://acbl.mybigcommerce.com/52-playing-cards/
  Card data model inspired by Chase Robert's elegant Deck of Cards API https://deckofcardsapi.com/
  */
-package com.javafxpert.carddeckdemo.model;
+package com.javafxpert.carddeckdemo.carddeck;
 
-import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 

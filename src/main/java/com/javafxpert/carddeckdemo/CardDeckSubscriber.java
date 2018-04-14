@@ -1,6 +1,5 @@
 package com.javafxpert.carddeckdemo;
 
-import com.javafxpert.carddeckdemo.model.Card;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 

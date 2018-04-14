@@ -1,7 +1,8 @@
-package com.javafxpert.carddeckdemo.repository;
+package com.javafxpert.carddeckdemo.carddeck;
 
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
-import com.javafxpert.carddeckdemo.model.Card;
+import com.javafxpert.carddeckdemo.carddeck.Card;
+import com.javafxpert.carddeckdemo.carddeck.CardDeckRepository;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import javax.annotation.PostConstruct;

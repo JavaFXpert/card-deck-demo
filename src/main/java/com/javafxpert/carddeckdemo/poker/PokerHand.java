@@ -1,4 +1,4 @@
-package com.javafxpert.carddeckdemo.util.poker;
+package com.javafxpert.carddeckdemo.poker;
 
 /**
  * enum for ranking a poker hand

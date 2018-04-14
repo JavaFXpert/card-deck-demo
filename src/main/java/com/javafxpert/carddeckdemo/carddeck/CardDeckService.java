@@ -1,13 +1,11 @@
-package com.javafxpert.carddeckdemo.services;
+package com.javafxpert.carddeckdemo.carddeck;
 
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
-import com.javafxpert.carddeckdemo.model.Card;
-import com.javafxpert.carddeckdemo.repository.CardDeckRepository;
+import com.javafxpert.carddeckdemo.carddeck.Card;
+import com.javafxpert.carddeckdemo.carddeck.CardDeckRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.util.Comparator;
 import java.util.stream.Collectors;

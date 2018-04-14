@@ -1,9 +1,9 @@
 package com.javafxpert.carddeckdemo.services;
 
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
-import com.javafxpert.carddeckdemo.controllers.CardDeckController;
-import com.javafxpert.carddeckdemo.model.Card;
-import com.javafxpert.carddeckdemo.repository.CardDeckRepository;
+import com.javafxpert.carddeckdemo.carddeck.Card;
+import com.javafxpert.carddeckdemo.carddeck.CardDeckRepository;
+import com.javafxpert.carddeckdemo.carddeck.CardDeckService;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 import org.springframework.data.domain.Example;
@@ -11,8 +11,6 @@ import org.springframework.data.domain.Sort;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CardDeckServiceTest {
   CardDeckDemoProperties cardDeckDemoProperties = new CardDeckDemoProperties();

@@ -1,12 +1,11 @@
 package com.javafxpert.carddeckdemo.controllers;
 
 import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
-import com.javafxpert.carddeckdemo.controllers.CardDeckController;
-import com.javafxpert.carddeckdemo.model.Card;
-import com.javafxpert.carddeckdemo.repository.CardDeckRepository;
-import com.javafxpert.carddeckdemo.services.CardDeckService;
+import com.javafxpert.carddeckdemo.carddeck.CardDeckController;
+import com.javafxpert.carddeckdemo.carddeck.Card;
+import com.javafxpert.carddeckdemo.carddeck.CardDeckRepository;
+import com.javafxpert.carddeckdemo.carddeck.CardDeckService;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.reactivestreams.Publisher;
 import org.springframework.data.domain.Example;

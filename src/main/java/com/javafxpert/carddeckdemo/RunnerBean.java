@@ -1,14 +1,8 @@
 package com.javafxpert.carddeckdemo;
 
-import com.javafxpert.carddeckdemo.model.Card;
-import com.javafxpert.carddeckdemo.services.CardDeckService;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.javafxpert.carddeckdemo.carddeck.CardDeckService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Flux;
 
 @Component
 public class RunnerBean implements CommandLineRunner {

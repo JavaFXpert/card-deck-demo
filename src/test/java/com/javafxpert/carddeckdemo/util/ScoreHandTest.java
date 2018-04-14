@@ -1,16 +1,16 @@
 package com.javafxpert.carddeckdemo.util;
 
-import com.javafxpert.carddeckdemo.model.Card;
-import com.javafxpert.carddeckdemo.util.poker.Cards;
-import com.javafxpert.carddeckdemo.util.poker.PokerHand;
-import com.javafxpert.carddeckdemo.util.poker.ScoreHand;
+import com.javafxpert.carddeckdemo.carddeck.Card;
+import com.javafxpert.carddeckdemo.poker.Cards;
+import com.javafxpert.carddeckdemo.poker.PokerHand;
+import com.javafxpert.carddeckdemo.poker.ScoreHand;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ScoreHandTest {
   Cards cards = new Cards();
