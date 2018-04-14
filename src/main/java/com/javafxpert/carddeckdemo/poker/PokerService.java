@@ -15,6 +15,11 @@ public class PokerService {
   }
 
   public void updateHandFrequency(Mono<String> handNameMono) {
-    //HandFrequency handFrequency =
+    handFrequencyRepository
+      .findById(handNameMono);
+    //TODO Finish implementing method
+
+    //Increment frequency property of handFrequency
+    // Save updated handFrequency
   }
 }
