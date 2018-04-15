@@ -59,55 +59,61 @@ public class CardDeckController {
   }
 
   @GetMapping("/cut")
-  public Mono<CardHand> getCardDeckCut(@RequestParam(defaultValue = "") Mono<String> cards) {
-    return cards.as(cardDeckService::parseString)
-                .transform(cardShufflingService::cutCards)
-                .collectList()
-                .map(l -> new CardHand(l, "Cut"));
+  public Mono<CardHand> getCardDeckCut(@RequestParam(defaultValue = "") String cards) {
+    return Mono.just(cards)
+               .as(cardDeckService::parseString)
+               .transform(cardShufflingService::cutCards)
+               .collectList()
+               .map(l -> new CardHand(l, "Cut"));
   }
 
   @GetMapping("/overhandshuffle")
-  public Mono<CardHand> getCardDeckOverhandShuffle(@RequestParam(defaultValue = "") Mono<String> cards) {
-	  return cards.as(cardDeckService::parseString)
-                  .transform(cardShufflingService::overhandShuffle)
-                  .collectList()
-                  .map(l -> new CardHand(l, "Overhand shuffle"));
+  public Mono<CardHand> getCardDeckOverhandShuffle(@RequestParam(defaultValue = "") String cards) {
+	  return Mono.just(cards)
+                 .as(cardDeckService::parseString)
+                 .transform(cardShufflingService::overhandShuffle)
+                 .collectList()
+                 .map(l -> new CardHand(l, "Overhand shuffle"));
   }
 
   @GetMapping("/riffleshuffle")
-  public Mono<CardHand> getCardDeckRiffleShuffle(@RequestParam(defaultValue = "") Mono<String> cards) {
-    return cards.as(cardDeckService::parseString)
-                .transform(cardShufflingService::riffleShuffle)
-                .collectList()
-                .map(l -> new CardHand(l, "Riffle shuffle"));
+  public Mono<CardHand> getCardDeckRiffleShuffle(@RequestParam(defaultValue = "") String cards) {
+    return Mono.just(cards)
+               .as(cardDeckService::parseString)
+               .transform(cardShufflingService::riffleShuffle)
+               .collectList()
+               .map(l -> new CardHand(l, "Riffle shuffle"));
   }
 
   @GetMapping("/randomshuffle")
-  public Mono<CardHand> getCardDeckRandomShuffle(@RequestParam(defaultValue = "") Mono<String> cards) {
-    return cards.as(cardDeckService::parseString)
-                .transform(cardShufflingService::randomShuffle)
-                .collectList()
-                .map(l -> new CardHand(l, "Random shuffle"));
+  public Mono<CardHand> getCardDeckRandomShuffle(@RequestParam(defaultValue = "") String cards) {
+    return Mono.just(cards)
+               .as(cardDeckService::parseString)
+               .transform(cardShufflingService::randomShuffle)
+               .collectList()
+               .map(l -> new CardHand(l, "Random shuffle"));
   }
 
   @GetMapping("/dealpokerhand")
-  public Mono<CardHand> getCardDeckDealPokerHand(@RequestParam (defaultValue = "") Mono<String> cards) {
-    return cards.as(cardDeckService::parseString)
-                .transform(cardShufflingService::dealPokerHand)
-                .collectList()
-                .flatMap(l -> pokerService.handNameFromDeck(Flux.fromIterable(l))
-                                          .map(handName -> new CardHand(l, handName)));
+  public Mono<CardHand> getCardDeckDealPokerHand(@RequestParam (defaultValue = "") String cards) {
+    return Mono.just(cards)
+               .as(cardDeckService::parseString)
+               .transform(cardShufflingService::dealPokerHand)
+               .collectList()
+               .flatMap(l -> pokerService.handNameFromDeck(Flux.fromIterable(l))
+                                         .map(handName -> new CardHand(l, handName)));
 
   }
 
   @GetMapping("/shuffledeal")
-  public Mono<CardHand> getCardDeckShuffleDeal(@RequestParam (defaultValue = "") Mono<String> cards) {
-    return cards.as(cardDeckService::parseString)
-                .transform(cardShufflingService::shuffleWell)
-                .transform(cardShufflingService::dealPokerHand)
-                .collectList()
-                .flatMap(l -> pokerService.handNameFromDeck(Flux.fromIterable(l))
-                                          .map(handName -> new CardHand(l, handName)));
+  public Mono<CardHand> getCardDeckShuffleDeal(@RequestParam (defaultValue = "") String cards) {
+    return Mono.just(cards)
+               .as(cardDeckService::parseString)
+               .transform(cardShufflingService::shuffleWell)
+               .transform(cardShufflingService::dealPokerHand)
+               .collectList()
+               .flatMap(l -> pokerService.handNameFromDeck(Flux.fromIterable(l))
+                                         .map(handName -> new CardHand(l, handName)));
   }
 
   @GetMapping("/shuffledealrepeat")
