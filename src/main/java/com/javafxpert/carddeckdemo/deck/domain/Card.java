@@ -9,7 +9,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Document
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Card implements Comparable {
   @Id
   private String id;
@@ -21,7 +26,9 @@ public class Card implements Comparable {
   private int seq;
   private String imagesUri;
 
-  public Card(String code, String imagesUri) {
+  @JsonCreator
+  public Card(@JsonProperty("code") String code,
+          @JsonProperty("image") String imagesUri) {
     this.code = code;
     String valueCode = code.substring(0,1);
     switch (valueCode) {
