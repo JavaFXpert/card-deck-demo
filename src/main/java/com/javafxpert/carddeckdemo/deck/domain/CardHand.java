@@ -1,10 +1,10 @@
-package com.javafxpert.carddeckdemo.carddeck;
+package com.javafxpert.carddeckdemo.deck.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.javafxpert.carddeckdemo.carddeck.Card;
+import com.javafxpert.carddeckdemo.deck.domain.Card;
 
 public class CardHand {
 

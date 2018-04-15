@@ -1,9 +1,9 @@
 package com.javafxpert.carddeckdemo.util;
 
-import com.javafxpert.carddeckdemo.carddeck.Card;
+import com.javafxpert.carddeckdemo.deck.domain.Card;
 import com.javafxpert.carddeckdemo.poker.Cards;
-import com.javafxpert.carddeckdemo.poker.PokerHand;
-import com.javafxpert.carddeckdemo.poker.ScoreHand;
+import com.javafxpert.carddeckdemo.poker.domain.PokerHand;
+import com.javafxpert.carddeckdemo.poker.domain.ScoreHand;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

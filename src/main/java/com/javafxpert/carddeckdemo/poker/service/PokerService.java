@@ -1,7 +1,10 @@
-package com.javafxpert.carddeckdemo.poker;
+package com.javafxpert.carddeckdemo.poker.service;
 
-import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
+import com.javafxpert.carddeckdemo.deck.configuration.CardDeckImagesServerProperties;
 import org.springframework.stereotype.Service;
+
+import com.javafxpert.carddeckdemo.poker.domain.HandFrequency;
+import com.javafxpert.carddeckdemo.poker.repository.HandFrequencyRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -9,11 +12,11 @@ import java.time.Duration;
 
 @Service
 public class PokerService {
-  private final CardDeckDemoProperties cardDeckDemoProperties;
-  private final HandFrequencyRepository handFrequencyRepository;
+  private final CardDeckImagesServerProperties cardDeckImagesServerProperties;
+  private final HandFrequencyRepository        handFrequencyRepository;
 
-  public PokerService(CardDeckDemoProperties cardDeckDemoProperties, HandFrequencyRepository handFrequencyRepository) {
-    this.cardDeckDemoProperties = cardDeckDemoProperties;
+  public PokerService(CardDeckImagesServerProperties cardDeckImagesServerProperties, HandFrequencyRepository handFrequencyRepository) {
+    this.cardDeckImagesServerProperties = cardDeckImagesServerProperties;
     this.handFrequencyRepository = handFrequencyRepository;
   }
 
