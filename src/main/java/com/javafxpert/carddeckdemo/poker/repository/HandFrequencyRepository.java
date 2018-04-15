@@ -1,4 +1,6 @@
-package com.javafxpert.carddeckdemo.poker;
+package com.javafxpert.carddeckdemo.poker.repository;
+
+import com.javafxpert.carddeckdemo.poker.domain.HandFrequency;
 
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 

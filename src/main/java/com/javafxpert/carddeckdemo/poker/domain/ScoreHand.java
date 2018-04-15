@@ -1,7 +1,10 @@
-package com.javafxpert.carddeckdemo.poker;
+package com.javafxpert.carddeckdemo.poker.domain;
 
 import java.util.Arrays;
 import java.util.List;
+
+import com.javafxpert.carddeckdemo.poker.Cards;
+import com.javafxpert.carddeckdemo.poker.domain.PokerHand;
 
 /**
  * Score a hand of poker
@@ -18,12 +21,12 @@ public class ScoreHand {
     public static final int FOUR_OF_A_KIND = 17;
 
     List<Integer> hand;                 // the hand
-    int[] faceFrequency = new int[13];  // frequency table for face values
-    int[] suitFrequency = new int[4];   // frequency table for suits
-    boolean hasAce;                     // hand contains at least one Ace
-    boolean isRoyal;                    // hand contains a straight that is 'royal' i.e. A-10-J-Q-K
-    PokerHand rank;                     // calculated rank of the hand
-    int highCard;                       // highest card in hand for tiebreakers
+    int[]         faceFrequency = new int[13];  // frequency table for face values
+    int[]         suitFrequency = new int[4];   // frequency table for suits
+    boolean       hasAce;                     // hand contains at least one Ace
+    boolean       isRoyal;                    // hand contains a straight that is 'royal' i.e. A-10-J-Q-K
+    PokerHand     rank;                     // calculated rank of the hand
+    int           highCard;                       // highest card in hand for tiebreakers
 
     /**
      * Constructor

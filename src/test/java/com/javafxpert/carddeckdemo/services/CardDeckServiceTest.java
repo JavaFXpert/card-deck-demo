@@ -1,9 +1,9 @@
 package com.javafxpert.carddeckdemo.services;
 
-import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
-import com.javafxpert.carddeckdemo.carddeck.Card;
-import com.javafxpert.carddeckdemo.carddeck.CardDeckRepository;
-import com.javafxpert.carddeckdemo.carddeck.CardDeckService;
+import com.javafxpert.carddeckdemo.deck.configuration.CardDeckImagesServerProperties;
+import com.javafxpert.carddeckdemo.deck.domain.Card;
+import com.javafxpert.carddeckdemo.deck.repository.CardDeckRepository;
+import com.javafxpert.carddeckdemo.deck.service.impl.DefaultCardDeckService;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 import org.springframework.data.domain.Example;
@@ -13,8 +13,9 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 class CardDeckServiceTest {
-  CardDeckDemoProperties cardDeckDemoProperties = new CardDeckDemoProperties();
-  CardDeckRepository cardDeckRepository = new CardDeckRepository() {
+    CardDeckImagesServerProperties
+                           cardDeckImagesServerProperties = new CardDeckImagesServerProperties();
+    CardDeckRepository     cardDeckRepository             = new CardDeckRepository() {
     @Override
     public <S extends Card> Mono<S> insert(S s) {
       return null;
@@ -145,20 +146,7 @@ class CardDeckServiceTest {
       return null;
     }
   };
-  CardDeckService cardDeckService = new CardDeckService(cardDeckDemoProperties,
+    DefaultCardDeckService cardDeckService                = new DefaultCardDeckService(
+            cardDeckImagesServerProperties,
     cardDeckRepository);
-
-  @Test
-  void createStringFromCardFlux() {
-    Flux<Card> cardFlux = Flux.just(
-      new Card("AC", ""),
-      new Card("2C", ""),
-      new Card("3C", ""),
-      new Card("4C", ""),
-      new Card("5C", "")
-    );
-
-    StepVerifier.create(cardDeckService.createStringFromCardFlux(cardFlux))
-      .expectNext("AC,2C,3C,4C,5C");
-  }
 }

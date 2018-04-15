@@ -1,29 +1,24 @@
-package com.javafxpert.carddeckdemo.carddeck;
+package com.javafxpert.carddeckdemo.deck.configuration;
 
-import com.javafxpert.carddeckdemo.CardDeckDemoProperties;
-import com.javafxpert.carddeckdemo.carddeck.Card;
-import com.javafxpert.carddeckdemo.carddeck.CardDeckRepository;
-import org.springframework.stereotype.Component;
+import com.javafxpert.carddeckdemo.deck.domain.Card;
+import com.javafxpert.carddeckdemo.deck.repository.CardDeckRepository;
 import reactor.core.publisher.Flux;
-import javax.annotation.PostConstruct;
 
-@Component
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
 public class DataLoaderCardDeck {
-  private final CardDeckRepository cardDeckRepository;
-  private final CardDeckDemoProperties cardDeckDemoProperties;
-  private String imagesUri = "";
 
-  public DataLoaderCardDeck(CardDeckRepository cardDeckRepository,
-                            CardDeckDemoProperties cardDeckDemoProperties) {
-    this.cardDeckRepository = cardDeckRepository;
-    this.cardDeckDemoProperties = cardDeckDemoProperties;
-    imagesUri = cardDeckDemoProperties.getCardimageshost() + ":" + cardDeckDemoProperties.getCardimagesport() + "/images";
-  }
+  @Bean
+  public CommandLineRunner cardDeckDataLoaderCommandLineRunner(
+          CardDeckRepository cardDeckRepository,
+          CardDeckImagesServerProperties cardDeckImagesServerProperties) {
+    String imagesUri = cardDeckImagesServerProperties.getURI("/images");
 
-  @PostConstruct
-  private void loadData() {
-    this.cardDeckRepository.deleteAll().thenMany(
-      Flux.just(
+    return (args) -> cardDeckRepository.deleteAll()
+                                       .thenMany(Flux.just(
         new Card("AS", imagesUri),
         new Card("2S", imagesUri),
         new Card("3S", imagesUri),
@@ -78,8 +73,9 @@ public class DataLoaderCardDeck {
         new Card("0H", imagesUri),
         new Card("JH", imagesUri),
         new Card("QH", imagesUri),
-        new Card("KH", imagesUri))
-      .flatMap(s -> this.cardDeckRepository.save(s)))
-      .subscribe(System.out::println);
+        new Card("KH", imagesUri)
+                                       ))
+                                       .transform(cardDeckRepository::saveAll)
+                                       .subscribe(System.out::println);
   }
 }

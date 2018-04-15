@@ -1,0 +1,42 @@
+{
+  "groups": [
+    {
+      "name": "card.deck.images.server",
+      "type": "com.javafxpert.carddeckdemo.deck.configuration.CardDeckImagesServerProperties",
+      "sourceType": "com.javafxpert.carddeckdemo.deck.configuration.CardDeckImagesServerProperties",
+      "description": "Images Server Configurations Properties."
+    },
+    {
+      "name": "poker.server",
+      "type": "com.javafxpert.carddeckdemo.deck.configuration.PokerServerProperties",
+      "sourceType": "com.javafxpert.carddeckdemo.deck.configuration.PokerServerProperties",
+      "description": "Poker Server Configurations Properties."
+    }
+  ],
+  "properties": [
+    {
+      "name": "card.deck.images.server.host",
+      "type": "java.lang.String",
+      "sourceType": "com.javafxpert.carddeckdemo.deck.configuration.CardDeckImagesServerProperties",
+      "description": "Endpoint URI for images sources."
+    },
+    {
+      "name": "card.deck.images.server.host",
+      "type": "java.lang.String",
+      "sourceType": "com.javafxpert.carddeckdemo.deck.configuration.CardDeckImagesServerProperties",
+      "description": "Endpoint's URI PORT for images sources."
+    },
+    {
+      "name": "poker.server.host",
+      "type": "java.lang.String",
+      "sourceType": "com.javafxpert.carddeckdemo.deck.configuration.PokerServerProperties",
+      "description": "Endpoint URI for poker sources."
+    },
+    {
+      "name": "poker.server.host",
+      "type": "java.lang.String",
+      "sourceType": "com.javafxpert.carddeckdemo.deck.configuration.PokerServerProperties",
+      "description": "Endpoint's URI PORT for poker sources."
+    }
+  ]
+}

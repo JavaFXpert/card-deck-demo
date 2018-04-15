@@ -1,6 +1,6 @@
 package com.javafxpert.carddeckdemo.model;
 
-import com.javafxpert.carddeckdemo.carddeck.Card;
+import com.javafxpert.carddeckdemo.deck.domain.Card;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

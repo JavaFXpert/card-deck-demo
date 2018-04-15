@@ -1,14 +1,21 @@
-package com.javafxpert.carddeckdemo.poker;
+package com.javafxpert.carddeckdemo;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.javafxpert.carddeckdemo.poker.Cards;
+import com.javafxpert.carddeckdemo.poker.domain.PokerHand;
+import com.javafxpert.carddeckdemo.poker.domain.ScoreHand;
+import org.junit.Test;
+
 /**
  * @author /u/Philboyd_Studge on 3/27/2016.
  */
 public class PokerHandTester {
-    public static void main(String[] args) {
+
+    @Test
+    public void test(String[] args) {
         Cards deck = new Cards();
         deck.shuffle();
 
