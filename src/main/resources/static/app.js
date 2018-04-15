@@ -1,18 +1,12 @@
-// app state
-let dealerCards = [];
-let roundLost = false;
-let roundWon = false;
-let roundTied = false;
-let playerScore = 0;
-let dealerScore = 0;
+let playingCards = [];
 let cardStr = ""; // Comma-delimited string of card codes held in the client
 
 // score nodes
-let dealerScoreNode = document.getElementById("dealer-number");
+let messageDisplayNode = document.getElementById("message-display");
 // let playerScoreNode = document.getElementById("player-number");
 
 // card area nodes
-let dealerCardsNode = document.getElementById("dealer-cards");
+let playingCardsNode = document.getElementById("playing-cards");
 
 // other nodes
 let announcementNode = document.getElementById("announcement");
@@ -75,7 +69,7 @@ function dealCards(modeArg) {
         .then(res => {
           cardStr = "";
           res.cards.forEach((c, i) => {
-              dealerCards.push(c);
+              playingCards.push(c);
               let cardDomElement = document.createElement("img");
               if(i===-1) {
                   cardDomElement.src = 'http://127.0.0.1:8080/images/gray_back_reactor.png';
@@ -87,11 +81,10 @@ function dealCards(modeArg) {
               if (i < res.cards.length - 1) {
                   cardStr += ",";
               }
-              dealerCardsNode.appendChild(cardDomElement)
-              dealerScoreNode.textContent = res.name;
+              playingCardsNode.appendChild(cardDomElement)
+              messageDisplayNode.textContent = res.name;
           })
 
-          dealerScore = "?";
         })
         .catch(console.error)
 }
@@ -107,17 +100,16 @@ function newHand() {
     // hitMeNode.style.display = "block";
     // stayNode.style.display = "block";
 
-    dealerScore = "?";
-    dealerScoreNode.textContent = dealerScore;
+    messageDisplayNode.textContent = dealerScore;
 
-    dealerCards.forEach((card, i) => {
+    playingCards.forEach((card, i) => {
       let cardDomElement = document.createElement("img");
       if(i===0) {
         cardDomElement.src = 'http://127.0.0.1:8080/images/gray_back_reactor.png';
       } else {
         cardDomElement.src = card.image;
       }
-      dealerCardsNode.appendChild(cardDomElement)
+      playingCardsNode.appendChild(cardDomElement)
     })
 
   })
@@ -126,14 +118,13 @@ function newHand() {
 
 
 function resetPlayingArea() {
-  dealerCards = [];
+  playingCards = [];
   roundLost = false;
   roundWon = false;
   roundTied = false;
-  dealerScore = "";
-  dealerScoreNode.textContent = dealerScore;
-  while (dealerCardsNode.firstChild) {
-    dealerCardsNode.removeChild(dealerCardsNode.firstChild);
+  messageDisplayNode.textContent = "";
+  while (playingCardsNode.firstChild) {
+    playingCardsNode.removeChild(playingCardsNode.firstChild);
   }
 }
 

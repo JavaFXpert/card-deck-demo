@@ -16,14 +16,14 @@ h2 {
   font-size: 26px;
 }
 
-#dealer-number {
+#message-display {
   text-align: center;
   font-family: fantasy;
   font-size: 26px;
   color: white;
 }
 
-.game-container {
+.outer-container {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -36,7 +36,7 @@ h2 {
   background: #000000;
 }
 
-#dealer-cards {
+#playing-cards {
   display: flex;
   justify-content: center;
   height: 450px;
