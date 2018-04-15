@@ -43,24 +43,13 @@ h2 {
   //width: 850px;
   display:table;
   margin: 0 auto;
-
-  //overflow-x: scroll;
-  //overflow-y: hidden;
 }
 
 #action-area {
-  //position: absolute;
   justify-content: center;
-  //right: 10px;
-  //bottom: 20%;
   z-index: 10;
-  //width: 15%;
   display: flex;
   flex-direction: row;
-}
-
-#next-hand, #hit-me {
-  //margin-bottom: 3rem;
 }
 
 button {
@@ -89,15 +78,6 @@ button:active {
   -webkit-box-shadow: inset 0px 0px 14px 5px rgba(0,0,0,0.75);
   -moz-box-shadow: inset 0px 0px 14px 5px rgba(0,0,0,0.75);
   box-shadow: inset 0px 0px 14px 5px rgba(0,0,0,0.75);
-}
-button#next-hand {
-  background-color: #6ea023;
-}
-button#hit-me {
-  background-color: #c3de00;
-}
-button#stay {
-  background-color: #add285;
 }
 
 img {
