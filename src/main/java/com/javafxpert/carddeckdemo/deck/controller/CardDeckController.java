@@ -64,7 +64,7 @@ public class CardDeckController {
                .as(cardDeckService::parseString)
                .transform(cardShufflingService::cutCards)
                .collectList()
-               .map(l -> new CardHand(l, "Cut"));
+               .map(l -> new CardHand(l, "Cut Cards"));
   }
 
   @GetMapping("/overhandshuffle")
@@ -73,7 +73,7 @@ public class CardDeckController {
                  .as(cardDeckService::parseString)
                  .transform(cardShufflingService::overhandShuffle)
                  .collectList()
-                 .map(l -> new CardHand(l, "Overhand shuffle"));
+                 .map(l -> new CardHand(l, "Overhand Shuffle"));
   }
 
   @GetMapping("/riffleshuffle")
@@ -82,7 +82,7 @@ public class CardDeckController {
                .as(cardDeckService::parseString)
                .transform(cardShufflingService::riffleShuffle)
                .collectList()
-               .map(l -> new CardHand(l, "Riffle shuffle"));
+               .map(l -> new CardHand(l, "Riffle Shuffle"));
   }
 
   @GetMapping("/randomshuffle")
@@ -91,7 +91,7 @@ public class CardDeckController {
                .as(cardDeckService::parseString)
                .transform(cardShufflingService::randomShuffle)
                .collectList()
-               .map(l -> new CardHand(l, "Random shuffle"));
+               .map(l -> new CardHand(l, "Random Shuffle"));
   }
 
   @GetMapping("/dealpokerhand")

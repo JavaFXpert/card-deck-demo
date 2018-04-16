@@ -1,24 +1,24 @@
 body {
-  background: #000000 ;
+  background: #009900;
 }
 
 h1 {
   margin: 2rem;
   text-align: center;
   color: white;
-  font-family: fantasy;
+  font-family: "Bookman Old Style";
 }
 
 h2 {
   text-align: center;
   color: white;
-  font-family: fantasy;
+  font-family: "Bookman Old Style";
   font-size: 26px;
 }
 
 #message-display {
   text-align: center;
-  font-family: fantasy;
+  font-family: "Bookman Old Style";
   font-size: 26px;
   color: white;
 }
@@ -33,15 +33,14 @@ h2 {
   position: relative;
   z-index: 1;
   width: 100%;
-  background: #000000;
+  background: #009900;
 }
 
 #playing-cards {
   display: flex;
   justify-content: center;
   height: 450px;
-  //width: 850px;
-  display:table;
+  display: table;
   margin: 0 auto;
 }
 
@@ -53,9 +52,10 @@ h2 {
 }
 
 button {
-  font-family: fantasy;
-  background: #6ea023;
-  color: #051900;
+  font-family: "Bookman Old Style";
+  font-weight: bold;
+  background: #ffffff;
+  color: black;
   padding: 1rem;
   font-size: 1rem;
   border-radius: 10px;
@@ -71,10 +71,10 @@ button {
 }
 button:hover {
   cursor: pointer;
-  color: white;
+  color: red;
 }
 button:active {
-  color: yellow;
+  color: red;
   -webkit-box-shadow: inset 0px 0px 14px 5px rgba(0,0,0,0.75);
   -moz-box-shadow: inset 0px 0px 14px 5px rgba(0,0,0,0.75);
   box-shadow: inset 0px 0px 14px 5px rgba(0,0,0,0.75);
@@ -83,6 +83,7 @@ button:active {
 img {
   width: 65px;
   height: 100px;
+  margin: 1px 2px 1px 2px;
 }
 
 @media (min-width: 1200px) {

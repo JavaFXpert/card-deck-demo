@@ -34,7 +34,7 @@ function dealCards(modeArg) {
         fetchStr = "http://localhost:8080/cards/deck/new?numcards=52";
     }
     else if (modeArg === "onlyHearts") {
-        fetchStr = "http://localhost:8080/cards/deck/hearts";
+        fetchStr = "http://localhost:8080/cards/deck/Hearts";
     }
     else if (modeArg === "cutCards") {
         fetchStr = "http://localhost:8080/cards/deck/cut?cards=" + cardStr;
@@ -71,7 +71,7 @@ function dealCards(modeArg) {
           res.cards.forEach((c, i) => {
               playingCards.push(c);
               let cardDomElement = document.createElement("img");
-              if(i===-1) {
+              if(i % 2 === 3) {
                   cardDomElement.src = 'http://127.0.0.1:8080/images/gray_back_reactor.png';
               }
               else {
