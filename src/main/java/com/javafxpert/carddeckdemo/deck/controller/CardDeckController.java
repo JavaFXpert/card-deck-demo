@@ -117,7 +117,7 @@ public class CardDeckController {
   }
 
   @GetMapping("/shuffledealrepeat")
-  public Flux<Tuple3<String, Long, Double>> shuffleDealRepeatCollectStats(@RequestParam (defaultValue = "1000") int numtimes) {
+  public Flux<Tuple3<String, Long, Double>> shuffleDealRepeatCollectStats(@RequestParam (defaultValue = "10") int numtimes) {
     Comparator<Tuple3<String, Long, Double>> t3Comparator = Comparator.comparingLong(Tuple2::getT2);
     return Flux
         .range(0, numtimes)

@@ -2,8 +2,10 @@ package com.javafxpert.carddeckdemo.poker.controller;
 
 import com.javafxpert.carddeckdemo.deck.domain.Card;
 import com.javafxpert.carddeckdemo.deck.service.impl.DefaultCardDeckService;
+import com.javafxpert.carddeckdemo.poker.domain.HandFrequency;
 import com.javafxpert.carddeckdemo.poker.service.PokerService;
 import com.javafxpert.carddeckdemo.poker.domain.ScoreHand;
+import org.springframework.web.bind.annotation.GetMapping;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,6 +26,11 @@ public class PokerController {
 
   public PokerController(PokerService pokerService) {
     this.pokerService = pokerService;
+  }
+
+  @GetMapping("/handfrequencies")
+  public Flux<HandFrequency> handFrequencies() {
+    return pokerService.retrieveHandFrequencies();
   }
 
   @PostMapping("/hand")
