@@ -37,10 +37,10 @@ public class HandFrequency {
     return Objects.hash(handName, frequency, frequencyPercent);
   }
 
-  public HandFrequency(String handName, long frequency) {
+  public HandFrequency(String handName, long frequency, double frequencyPercent) {
     this.handName = handName;
     this.frequency = frequency;
-
+    this.frequencyPercent = frequencyPercent;
   }
 
   public String getHandName() {
