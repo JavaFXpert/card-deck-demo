@@ -61,7 +61,7 @@ public class DefaultCardShufflingService implements CardShufflingService {
     return cardFlux.collectList()
                    .flatMapMany(l -> Flux.zip(
                         Flux.fromStream(l.stream().limit((long) (ceil(l.size() / 2.0)))),
-		                Flux.fromStream(l.stream().skip((long) (floor(l.size() / 2.0))))
+		                    Flux.fromStream(l.stream().skip((long) (floor(l.size() / 2.0))))
                    ))
                    .flatMap(tuple2 -> Flux.just(tuple2.getT1(), tuple2.getT2()))
                    .distinct();
