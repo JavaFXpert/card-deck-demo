@@ -1,24 +1,20 @@
 package com.javafxpert.carddeckdemo.poker.service;
 
-import com.javafxpert.carddeckdemo.deck.configuration.CardDeckImagesServerProperties;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
+import java.time.Duration;
 
 import com.javafxpert.carddeckdemo.poker.domain.HandFrequency;
 import com.javafxpert.carddeckdemo.poker.repository.HandFrequencyRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.math.MathFlux;
 
-import java.time.Duration;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PokerService {
-  private final CardDeckImagesServerProperties cardDeckImagesServerProperties;
   private final HandFrequencyRepository        handFrequencyRepository;
 
-  public PokerService(CardDeckImagesServerProperties cardDeckImagesServerProperties, HandFrequencyRepository handFrequencyRepository) {
-    this.cardDeckImagesServerProperties = cardDeckImagesServerProperties;
+  public PokerService(HandFrequencyRepository handFrequencyRepository) {
     this.handFrequencyRepository = handFrequencyRepository;
   }
 
@@ -33,16 +29,17 @@ public class PokerService {
   }
 
   public Flux<HandFrequency> retrieveHandFrequencies() {
-    Flux<HandFrequency> handFrequencyFlux = handFrequencyRepository
-        .findAll(Sort.by("frequency"));
-    Mono<Long> totalFrequencies = MathFlux.sumLong(handFrequencyFlux
-        .map(HandFrequency::getFrequency));
+    return handFrequencyRepository.findAll(Sort.by("frequency"))
+		    .collectList()
+		    .flatMapMany(l -> {
+			    long totalFrequencies = l.stream()
+			                             .mapToLong(HandFrequency::getFrequency)
+			                             .sum();
 
-    long longTotalFrequencies = 10; // TODO: Somehow get the number at some point from the Mono<Long>
-
-    return handFrequencyFlux.map( hf ->
-        new HandFrequency(hf.getHandName(),
-            hf.getFrequency(),
-            hf.getFrequency() * 100 / longTotalFrequencies));
-  };
+			    return Flux.fromStream(l.stream())
+			               .map(hf -> new HandFrequency(hf.getHandName(),
+					               hf.getFrequency(),
+					               hf.getFrequency() * 100 / totalFrequencies));
+		    });
+  }
 }
