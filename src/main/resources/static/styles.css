@@ -1,24 +1,24 @@
 body {
-  background: #009900;
+  background: #277714;
 }
 
 h1 {
   margin: 2rem;
   text-align: center;
   color: white;
-  font-family: "Bookman Old Style";
+  font-family: Futura;
 }
 
 h2 {
   text-align: center;
   color: white;
-  font-family: "Bookman Old Style";
+  font-family: Futura;
   font-size: 26px;
 }
 
 #message-display {
   text-align: center;
-  font-family: "Bookman Old Style";
+  font-family: Futura;
   font-size: 26px;
   color: white;
 }
@@ -33,7 +33,7 @@ h2 {
   position: relative;
   z-index: 1;
   width: 100%;
-  background: #009900;
+  background: #277714;
 }
 
 #playing-cards {
@@ -52,7 +52,7 @@ h2 {
 }
 
 button {
-  font-family: "Bookman Old Style";
+  font-family: Futura;
   font-weight: bold;
   background: #ffffff;
   color: black;
