@@ -1,5 +1,6 @@
 let playingCards = [];
 let cardStr = ""; // Comma-delimited string of card codes held in the client
+let cardBackImg = 'http://127.0.0.1:8080/images/gray_back_reactor.png';
 
 // mmessage display node
 let messageDisplayNode = document.getElementById("message-display");
@@ -71,12 +72,12 @@ function dealCards(modeArg) {
           res.cards.forEach((c, i) => {
               playingCards.push(c);
               let cardDomElement = document.createElement("img");
-              if(i % 2 === 3) {
-                  cardDomElement.src = 'http://127.0.0.1:8080/images/gray_back_reactor.png';
-              }
-              else {
-                  cardDomElement.src = c.image;
-              }
+              cardDomElement.src = c.image;
+              cardDomElement.alt = c.image;
+              cardDomElement.addEventListener("click",
+                  evt => cardDomElement.src = (cardDomElement.src == cardDomElement.alt ? cardBackImg : cardDomElement.alt));
+
+
               cardStr += c.code;
               if (i < res.cards.length - 1) {
                   cardStr += ",";
