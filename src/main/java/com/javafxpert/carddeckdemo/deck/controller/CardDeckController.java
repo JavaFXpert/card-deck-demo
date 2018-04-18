@@ -48,7 +48,7 @@ public class CardDeckController {
   @GetMapping("/{suit}")
   public Mono<CardHand>  getCardDeckBySuit(
           @PathVariable String suit,
-          @RequestParam(defaultValue = "13") int numcards
+          @RequestParam(defaultValue = "10") int numcards
   ) {
     return cardDeckService.generate()
                           .filter(card -> card.getSuit()
