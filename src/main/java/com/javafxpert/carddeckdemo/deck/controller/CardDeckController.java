@@ -57,14 +57,12 @@ public class CardDeckController {
     int defaultNumCards = 52;
     return RouterFunctions.route(
         RequestPredicates.GET("/newdeck"),
-        request -> ServerResponse
-            .ok()
-            .body(cds.generate()
-                    .take(request.queryParam("numcards")
-                    .map(s -> Integer.parseInt(s)).orElse(defaultNumCards))
-                    .collectList()
-                    .map(l -> new CardHand(l,"New Deck")),
-                CardHand.class));
+        request -> cds.generate()
+            .take(request.queryParam("numcards")
+                .map(Integer::parseInt).orElse(defaultNumCards))
+            .collectList()
+            .map(l -> new CardHand(l,"New Deck"))
+            .flatMap(ServerResponse.ok()::syncBody));
   }
 
   @GetMapping("/{suit}")
