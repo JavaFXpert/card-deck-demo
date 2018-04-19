@@ -32,7 +32,8 @@ shuffleDealNode.onclick = () => dealCards('shuffleDeal');
 function dealCards(modeArg) {
     var fetchStr = "http://localhost:8080/cards/deck/new?numcards=52";
     if (modeArg === "newDeck") {
-        fetchStr = "http://localhost:8080/cards/deck/new?numcards=52";
+        //fetchStr = "http://localhost:8080/cards/deck/new?numcards=52";
+        fetchStr = "http://localhost:8080/newdeck?numcards=52";
     }
     else if (modeArg === "onlyHearts") {
         fetchStr = "http://localhost:8080/cards/deck/Hearts";

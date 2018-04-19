@@ -1,11 +1,17 @@
 package com.javafxpert.carddeckdemo.deck.controller;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 import com.javafxpert.carddeckdemo.deck.domain.CardHand;
 import com.javafxpert.carddeckdemo.deck.service.CardDeckService;
 import com.javafxpert.carddeckdemo.deck.service.CardShufflingService;
 import com.javafxpert.carddeckdemo.deck.service.PokerService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.reactive.function.server.RequestPredicates;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -38,11 +44,26 @@ public class CardDeckController {
   }
 
   @GetMapping("/new")
-  public Mono<CardHand> getCardDeck(@RequestParam(defaultValue = "52") int numcards) {
+  public Mono<CardHand> getCardDeck(@RequestParam(defaultValue = "52")
+                                          int numcards) {
     return cardDeckService.generate()
                           .take(numcards)
                           .collectList()
                           .map(l -> new CardHand(l, "New Deck"));
+  }
+
+  @Bean
+  RouterFunction<ServerResponse> newDeckRoutes(CardDeckService cds) {
+    return RouterFunctions.route(
+        RequestPredicates.GET("/newdeck"),
+        request -> ServerResponse
+            .ok()
+            .body(cds.generate()
+                    .take(request.queryParam("numcards")
+                    .map(s -> Integer.parseInt(s)).orElse(52))
+                    .collectList()
+                    .map(l -> new CardHand(l,"New Deck")),
+                CardHand.class));
   }
 
   @GetMapping("/{suit}")

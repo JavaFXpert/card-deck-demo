@@ -43,11 +43,11 @@ public class PokerController {
                        pokerService.updateHandFrequency(Mono.just(handName))
                                    .then(Mono.just(ResponseEntity.ok(handName)))
                    )
-                   .defaultIfEmpty(ResponseEntity.badRequest().body("Illegal cards amount"));
+                   .defaultIfEmpty(ResponseEntity.badRequest().body("Illegal number of cards"));
   }
 
   @Bean
-  RouterFunction<ServerResponse> routes(DefaultCardDeckService cardDeckService) {
+  RouterFunction<ServerResponse> idHandRoutes() {
     return RouterFunctions.route(
       RequestPredicates.POST("/poker/idhand"), request ->
         request.bodyToFlux(Card.class)
@@ -59,7 +59,7 @@ public class PokerController {
                    pokerService.updateHandFrequency(Mono.just(handName))
                                .then(ServerResponse.ok().syncBody(handName))
                )
-               .switchIfEmpty(ServerResponse.badRequest().syncBody("Illegal cards amount"))
+               .switchIfEmpty(ServerResponse.badRequest().syncBody("Illegal number of cards"))
     );
   }
 }
