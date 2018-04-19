@@ -54,13 +54,14 @@ public class CardDeckController {
 
   @Bean
   RouterFunction<ServerResponse> newDeckRoutes(CardDeckService cds) {
+    int defaultNumCards = 52;
     return RouterFunctions.route(
         RequestPredicates.GET("/newdeck"),
         request -> ServerResponse
             .ok()
             .body(cds.generate()
                     .take(request.queryParam("numcards")
-                    .map(s -> Integer.parseInt(s)).orElse(52))
+                    .map(s -> Integer.parseInt(s)).orElse(defaultNumCards))
                     .collectList()
                     .map(l -> new CardHand(l,"New Deck")),
                 CardHand.class));
