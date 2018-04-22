@@ -36,19 +36,19 @@ public class DefaultCardShufflingService implements CardShufflingService {
 	                 .flatMapIterable(l -> {
 		                 int maxChunk = 5;
 		                 int numCardsLeft = l.size();
-		                 List<Card> overhandShuffledCardFlux = new ArrayList<>();
+		                 List<Card> cardList = new ArrayList<>();
 
 		                 while (numCardsLeft > 0) {
 			                 List<Card> tempCardFlux = l.subList(0, numCardsLeft);
 			                 int numCardsToTransfer = min((int) (random() * maxChunk + 1),
 					                 numCardsLeft);
-			                 overhandShuffledCardFlux.addAll(
+			                 cardList.addAll(
 				                 tempCardFlux.subList(tempCardFlux.size() - numCardsToTransfer, tempCardFlux.size())
 			                 );
 
 			                 numCardsLeft -= numCardsToTransfer;
 		                 }
-		                 return overhandShuffledCardFlux;
+		                 return cardList;
 	                 });
   }
 
