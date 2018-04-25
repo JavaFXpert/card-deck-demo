@@ -75,7 +75,7 @@ public class DataLoaderCardDeck {
         new Card("QH", imagesUri),
         new Card("KH", imagesUri)
                                        ))
-                                       .transform(cardDeckRepository::saveAll)
-                                       .subscribe(System.out::println);
+        .transform(cardDeckRepository::saveAll)
+        .subscribe(System.out::println);
   }
 }

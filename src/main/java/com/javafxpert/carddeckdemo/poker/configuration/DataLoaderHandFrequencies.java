@@ -28,7 +28,7 @@ public class DataLoaderHandFrequencies {
         new HandFrequency(PokerHand.STRAIGHT_FLUSH.getName(), 0, 0.0),
         new HandFrequency(PokerHand.ROYAL_FLUSH.getName(), 0, 0.0)
                                             ))
-                                            .transform(handFrequencyRepository::saveAll)
-                                            .subscribe(System.out::println);
+        .transform(handFrequencyRepository::saveAll)
+        .subscribe(System.out::println);
   }
 }
